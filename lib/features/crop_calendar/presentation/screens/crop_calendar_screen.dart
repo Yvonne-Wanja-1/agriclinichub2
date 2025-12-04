@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CropCalendarScreen extends StatefulWidget {
   const CropCalendarScreen({Key? key}) : super(key: key);
@@ -8,210 +9,405 @@ class CropCalendarScreen extends StatefulWidget {
 }
 
 class _CropCalendarScreenState extends State<CropCalendarScreen> {
-  String? selectedCounty = 'Kiambu';
-
-  final List<String> kenyaCounties = [
-    'Kiambu',
-    'Nairobi',
-    'Murang\'a',
-    'Kisii',
-    'Nakuru',
-    'Nyeri',
-    'Elgeyo-Marakwet',
-    'Nandi',
-    'Kericho',
-    'Bomet',
+  late DateTime _selectedMonth;
+  final List<Map<String, dynamic>> _events = [
+    {
+      'date': DateTime(2024, 12, 5),
+      'title': 'Plant Tomatoes',
+      'type': 'planting',
+      'color': Colors.green,
+    },
+    {
+      'date': DateTime(2024, 12, 10),
+      'title': 'Water Plants',
+      'type': 'watering',
+      'color': Colors.blue,
+    },
+    {
+      'date': DateTime(2024, 12, 15),
+      'title': 'Apply Fertilizer',
+      'type': 'care',
+      'color': Colors.orange,
+    },
+    {
+      'date': DateTime(2024, 12, 20),
+      'title': 'Harvest Maize',
+      'type': 'harvest',
+      'color': Colors.amber,
+    },
+    {
+      'date': DateTime(2024, 12, 25),
+      'title': 'Plant Beans',
+      'type': 'planting',
+      'color': Colors.green,
+    },
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedMonth = DateTime.now();
+  }
+
+  List<Map<String, dynamic>> get _currentMonthEvents {
+    return _events
+        .where(
+          (event) =>
+              event['date'].month == _selectedMonth.month &&
+              event['date'].year == _selectedMonth.year,
+        )
+        .toList();
+  }
+
+  List<Map<String, dynamic>> get _upcomingEvents {
+    return _events
+        .where((event) => event['date'].isAfter(DateTime.now()))
+        .toList()
+      ..sort((a, b) => a['date'].compareTo(b['date']));
+  }
+
+  void _previousMonth() {
+    setState(() {
+      _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month - 1);
+    });
+  }
+
+  void _nextMonth() {
+    setState(() {
+      _selectedMonth = DateTime(_selectedMonth.year, _selectedMonth.month + 1);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Crop Calendar'), elevation: 0),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
-              Text(
-                'Select Your County',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              const SizedBox(height: 12),
-              DropdownButtonFormField<String>(
-                value: selectedCounty,
-                items: kenyaCounties
-                    .map(
-                      (county) =>
-                          DropdownMenuItem(value: county, child: Text(county)),
-                    )
-                    .toList(),
-                onChanged: (value) {
-                  setState(() => selectedCounty = value);
-                },
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
+      appBar: AppBar(
+        title: const Text('Crop Calendar'),
+        centerTitle: true,
+        backgroundColor: Colors.green.shade600,
+        elevation: 0,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.green.shade50, Colors.white],
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Month Navigation
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.chevron_left,
+                          color: Colors.green.shade600,
+                        ),
+                        onPressed: _previousMonth,
+                      ),
+                      Text(
+                        DateFormat('MMMM yyyy').format(_selectedMonth),
+                        style: Theme.of(context).textTheme.headlineSmall
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.chevron_right,
+                          color: Colors.green.shade600,
+                        ),
+                        onPressed: _nextMonth,
+                      ),
+                    ],
                   ),
-                ),
-              ),
-              const SizedBox(height: 32),
-              Text(
-                'Seasonal Guide for $selectedCounty',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              const SizedBox(height: 16),
-              _buildCropCalendarItem(
-                context,
-                crop: 'Tomato',
-                season: 'March - August',
-                plantingMonth: 'March - April',
-                harvestMonth: 'June - August',
-                tips: [
-                  'Plant in well-drained soil',
-                  'Provide adequate water',
-                  'Use stakes for support',
+                  const SizedBox(height: 20),
+
+                  // Calendar Grid
+                  _buildCalendarGrid(),
+                  const SizedBox(height: 30),
+
+                  // Legend
+                  _buildLegend(),
+                  const SizedBox(height: 30),
+
+                  // Upcoming Events
+                  Text(
+                    'Upcoming Events',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  if (_upcomingEvents.isEmpty)
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.grey.shade100,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'No upcoming events',
+                          style: TextStyle(color: Colors.grey.shade600),
+                        ),
+                      ),
+                    )
+                  else
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: _upcomingEvents.length,
+                      itemBuilder: (context, index) {
+                        final event = _upcomingEvents[index];
+                        return _buildEventCard(event);
+                      },
+                    ),
+                  const SizedBox(height: 20),
                 ],
               ),
-              const SizedBox(height: 12),
-              _buildCropCalendarItem(
-                context,
-                crop: 'Maize',
-                season: 'April - September',
-                plantingMonth: 'April - May',
-                harvestMonth: 'September',
-                tips: [
-                  'Requires good rainfall',
-                  'Space plants properly',
-                  'Control weeds regularly',
-                ],
-              ),
-              const SizedBox(height: 12),
-              _buildCropCalendarItem(
-                context,
-                crop: 'Beans',
-                season: 'March - June',
-                plantingMonth: 'March',
-                harvestMonth: 'June',
-                tips: [
-                  'Prefers moderate climate',
-                  'Mulch soil for moisture',
-                  'Harvest before fully dry',
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildCropCalendarItem(
-    BuildContext context, {
-    required String crop,
-    required String season,
-    required String plantingMonth,
-    required String harvestMonth,
-    required List<String> tips,
-  }) {
+  Widget _buildCalendarGrid() {
+    final firstDay = DateTime(_selectedMonth.year, _selectedMonth.month, 1);
+    final lastDay = DateTime(_selectedMonth.year, _selectedMonth.month + 1, 0);
+    final daysInMonth = lastDay.day;
+    final startingDayOfWeek = firstDay.weekday;
+
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
-        border: Border.all(color: Colors.green.shade200),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: Colors.grey.shade200),
+      ),
+      child: Column(
+        children: [
+          // Day headers
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                .map(
+                  (day) => SizedBox(
+                    width: 40,
+                    child: Center(
+                      child: Text(
+                        day,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.grey.shade600,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+          const SizedBox(height: 10),
+          // Calendar days
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 7,
+              childAspectRatio: 1,
+            ),
+            itemCount: 42,
+            itemBuilder: (context, index) {
+              int dayNumber = index - startingDayOfWeek + 2;
+
+              if (dayNumber < 1 || dayNumber > daysInMonth) {
+                return Container();
+              }
+
+              final date = DateTime(
+                _selectedMonth.year,
+                _selectedMonth.month,
+                dayNumber,
+              );
+              final hasEvent = _events.any(
+                (event) =>
+                    event['date'].year == date.year &&
+                    event['date'].month == date.month &&
+                    event['date'].day == date.day,
+              );
+              final isToday =
+                  date.year == DateTime.now().year &&
+                  date.month == DateTime.now().month &&
+                  date.day == DateTime.now().day;
+
+              return Container(
+                margin: const EdgeInsets.all(2),
+                decoration: BoxDecoration(
+                  color: isToday ? Colors.green.shade600 : Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: hasEvent
+                      ? Border.all(color: Colors.green.shade400, width: 2)
+                      : Border.all(color: Colors.grey.shade200),
+                ),
+                child: Stack(
+                  children: [
+                    Center(
+                      child: Text(
+                        '$dayNumber',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: isToday ? Colors.white : Colors.black87,
+                        ),
+                      ),
+                    ),
+                    if (hasEvent)
+                      Positioned(
+                        bottom: 4,
+                        left: 0,
+                        right: 0,
+                        child: Center(
+                          child: Container(
+                            width: 6,
+                            height: 6,
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade600,
+                              shape: BoxShape.circle,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLegend() {
+    final eventTypes = [
+      {'type': 'planting', 'label': 'Planting', 'color': Colors.green},
+      {'type': 'watering', 'label': 'Watering', 'color': Colors.blue},
+      {'type': 'care', 'label': 'Care', 'color': Colors.orange},
+      {'type': 'harvest', 'label': 'Harvest', 'color': Colors.amber},
+    ];
+
+    return Container(
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        color: Colors.green.shade50,
+        border: Border.all(color: Colors.grey.shade200),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                crop,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.green.shade200,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  season,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.green.shade700,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
+          Text(
+            'Event Types',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.grey.shade800,
+            ),
           ),
           const SizedBox(height: 12),
-          Row(
-            children: [
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Planting',
-                      style: Theme.of(context).textTheme.bodySmall,
+          Wrap(
+            spacing: 15,
+            runSpacing: 10,
+            children: eventTypes.map((type) {
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: type['color'] as Color,
+                      borderRadius: BorderRadius.circular(3),
                     ),
-                    Text(
-                      plantingMonth,
-                      style: const TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Harvest',
-                      style: Theme.of(context).textTheme.bodySmall,
-                    ),
-                    Text(
-                      harvestMonth,
-                      style: const TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text('Tips', style: Theme.of(context).textTheme.bodySmall),
-          const SizedBox(height: 8),
-          ...tips
-              .map(
-                (tip) => Padding(
-                  padding: const EdgeInsets.only(bottom: 6.0),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.check_circle_outline,
-                        size: 16,
-                        color: Colors.green.shade700,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(child: Text(tip)),
-                    ],
                   ),
-                ),
-              )
-              .toList(),
+                  const SizedBox(width: 8),
+                  Text(
+                    type['label'] as String,
+                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                  ),
+                ],
+              );
+            }).toList(),
+          ),
         ],
       ),
     );
+  }
+
+  Widget _buildEventCard(Map<String, dynamic> event) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        color: (event['color'] as Color).withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: (event['color'] as Color).withOpacity(0.3)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: event['color'] as Color,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              _getEventIcon(event['type']),
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  event['title'] as String,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    color: Colors.black87,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  DateFormat('MMM dd, yyyy').format(event['date'] as DateTime),
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  IconData _getEventIcon(String type) {
+    switch (type) {
+      case 'planting':
+        return Icons.local_florist;
+      case 'watering':
+        return Icons.water_drop;
+      case 'harvest':
+        return Icons.grain;
+      default:
+        return Icons.spa;
+    }
   }
 }
