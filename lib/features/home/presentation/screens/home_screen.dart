@@ -14,7 +14,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Agri Clinic Hub', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Agri Clinic Hub',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         elevation: 0,
         backgroundColor: Colors.green.shade600,
         actions: [
@@ -26,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: _buildContent(),
+      body: const HomeContent(),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: _selectedIndex,
@@ -42,21 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
     );
-  }
-
-  Widget _buildContent() {
-    switch (_selectedIndex) {
-      case 0:
-        return const HomeContent();
-      case 1:
-        return Container();
-      case 2:
-        return Container();
-      case 3:
-        return Container();
-      default:
-        return const HomeContent();
-    }
   }
 
   void _navigateToScreen(int index) {
@@ -120,10 +108,7 @@ class HomeContent extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   'Your farm is healthy and thriving',
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
-                  ),
+                  style: TextStyle(color: Colors.white70, fontSize: 14),
                 ),
               ],
             ),
@@ -132,9 +117,9 @@ class HomeContent extends StatelessWidget {
           // Quick Actions
           Text(
             'Quick Actions',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
           GridView.count(
@@ -175,12 +160,12 @@ class HomeContent extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
-          // Recent Scans
+          // Recent Activity
           Text(
             'Recent Activity',
-            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 12),
           Card(
@@ -193,7 +178,7 @@ class HomeContent extends StatelessWidget {
                   color: Colors.green.shade100,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(Icons.leaf, color: Colors.green.shade700),
+                child: Icon(Icons.eco, color: Colors.green.shade700),
               ),
               title: const Text('Tomato Leaf Scan'),
               subtitle: const Text('2 hours ago'),
@@ -230,7 +215,13 @@ class HomeContent extends StatelessWidget {
     );
   }
 
-  Widget _buildActionCard(BuildContext context, IconData icon, String label, Color color, VoidCallback onTap) {
+  static Widget _buildActionCard(
+    BuildContext context,
+    IconData icon,
+    String label,
+    Color color,
+    VoidCallback onTap,
+  ) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -255,150 +246,13 @@ class HomeContent extends StatelessWidget {
             Text(
               label,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Your Digital Farm Clinic',
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Quick Actions
-            Text(
-              'Quick Actions',
-              style: Theme.of(context).textTheme.titleLarge,
-            ),
-            const SizedBox(height: 16),
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              children: [
-                _buildActionCard(
-                  context,
-                  icon: Icons.camera_alt,
-                  title: 'Scan Plant',
-                  onTap: () => Navigator.of(context).pushNamed('/scan'),
-                ),
-                _buildActionCard(
-                  context,
-                  icon: Icons.calendar_today,
-                  title: 'Crop Calendar',
-                  onTap: () => Navigator.of(context).pushNamed('/calendar'),
-                ),
-                _buildActionCard(
-                  context,
-                  icon: Icons.school,
-                  title: 'Learn',
-                  onTap: () => Navigator.of(context).pushNamed('/education'),
-                ),
-                _buildActionCard(
-                  context,
-                  icon: Icons.mic,
-                  title: 'Voice Mode',
-                  onTap: () => Navigator.of(context).pushNamed('/voice-mode'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-
-            // Recent Scans
-            Text('Recent Scans', style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 16),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade300),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Center(
-                child: Text('No recent scans. Start by scanning a plant!'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildActionCard(
-    BuildContext context, {
-    required IconData icon,
-    required String title,
-    required VoidCallback onTap,
-  }) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.green.shade200),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.green.shade100,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(icon, color: Colors.green.shade700, size: 28),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              textAlign: TextAlign.center,
               style: Theme.of(
                 context,
-              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
             ),
           ],
         ),
       ),
     );
-  }
-}
-
-class ScanPlaceholder extends StatelessWidget {
-  const ScanPlaceholder({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Scan Screen - Navigate from home'));
-  }
-}
-
-class HistoryPlaceholder extends StatelessWidget {
-  const HistoryPlaceholder({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('History Screen - Navigate from home'));
-  }
-}
-
-class ProfilePlaceholder extends StatelessWidget {
-  const ProfilePlaceholder({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: Text('Profile Screen - Navigate from home'));
   }
 }

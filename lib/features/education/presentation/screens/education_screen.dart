@@ -7,223 +7,392 @@ class EducationScreen extends StatefulWidget {
   State<EducationScreen> createState() => _EducationScreenState();
 }
 
-class _EducationScreenState extends State<EducationScreen>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+class _EducationScreenState extends State<EducationScreen> {
+  String _selectedCategory = 'All';
+  String _searchQuery = '';
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: 3, vsync: this);
-  }
+  final List<String> _categories = [
+    'All',
+    'Pest Management',
+    'Crop Care',
+    'Soil Health',
+    'Water Management',
+    'Harvesting',
+  ];
 
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
+  final List<Map<String, dynamic>> _articles = [
+    {
+      'id': 1,
+      'title': 'Managing Fall Armyworm in Maize',
+      'category': 'Pest Management',
+      'excerpt': 'Learn effective strategies to control fall armyworm...',
+      'content':
+          'Fall armyworm is a major pest affecting maize crops. Early detection is key...',
+      'icon': Icons.bug_report,
+      'color': Colors.red,
+      'isBookmarked': false,
+    },
+    {
+      'id': 2,
+      'title': 'Proper Watering Techniques',
+      'category': 'Water Management',
+      'excerpt': 'Master the art of watering your crops efficiently...',
+      'content':
+          'Proper watering is essential for crop growth. Water should be applied...',
+      'icon': Icons.water_drop,
+      'color': Colors.blue,
+      'isBookmarked': true,
+    },
+    {
+      'id': 3,
+      'title': 'Soil Preparation for Tomato Farming',
+      'category': 'Soil Health',
+      'excerpt': 'Prepare your soil for optimal tomato growth...',
+      'content':
+          'Tomatoes require well-draining soil rich in organic matter...',
+      'icon': Icons.grass,
+      'color': Colors.brown,
+      'isBookmarked': false,
+    },
+    {
+      'id': 4,
+      'title': 'Organic Pest Control Methods',
+      'category': 'Pest Management',
+      'excerpt': 'Explore organic ways to protect your crops...',
+      'content': 'Organic pest control uses natural predators and materials...',
+      'icon': Icons.eco,
+      'color': Colors.green,
+      'isBookmarked': false,
+    },
+    {
+      'id': 5,
+      'title': 'Harvesting at the Right Time',
+      'category': 'Harvesting',
+      'excerpt': 'Know when to harvest for maximum yield...',
+      'content':
+          'Timing is crucial for harvest. Different crops have different...',
+      'icon': Icons.grain,
+      'color': Colors.orange,
+      'isBookmarked': false,
+    },
+    {
+      'id': 6,
+      'title': 'Composting for Better Soil',
+      'category': 'Soil Health',
+      'excerpt': 'Create nutrient-rich compost for your farm...',
+      'content':
+          'Composting converts organic waste into valuable fertilizer...',
+      'icon': Icons.compost,
+      'color': Colors.amber,
+      'isBookmarked': true,
+    },
+  ];
+
+  List<Map<String, dynamic>> get _filteredArticles {
+    return _articles.where((article) {
+      final matchesCategory =
+          _selectedCategory == 'All' ||
+          article['category'] == _selectedCategory;
+      final matchesSearch = article['title'].toLowerCase().contains(
+        _searchQuery.toLowerCase(),
+      );
+      return matchesCategory && matchesSearch;
+    }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Learn & Train'),
+        title: const Text('Education'),
+        centerTitle: true,
+        backgroundColor: Colors.green.shade600,
         elevation: 0,
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'Articles'),
-            Tab(text: 'Videos'),
-            Tab(text: 'Guides'),
-          ],
-        ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          _buildArticlesList(),
-          _buildVideosList(),
-          _buildGuidesList(),
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.green.shade50, Colors.white],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Search Bar
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: TextField(
+                  onChanged: (value) {
+                    setState(() => _searchQuery = value);
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Search articles...',
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.green.shade600,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: Colors.green.shade600,
+                        width: 2,
+                      ),
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                  ),
+                ),
+              ),
+
+              // Category Filter
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: SizedBox(
+                  height: 45,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: _categories.length,
+                    itemBuilder: (context, index) {
+                      final category = _categories[index];
+                      final isSelected = _selectedCategory == category;
+                      return Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: FilterChip(
+                          label: Text(category),
+                          selected: isSelected,
+                          onSelected: (value) {
+                            setState(() => _selectedCategory = category);
+                          },
+                          backgroundColor: Colors.white,
+                          selectedColor: Colors.green.shade600,
+                          labelStyle: TextStyle(
+                            color: isSelected
+                                ? Colors.white
+                                : Colors.grey.shade700,
+                            fontWeight: FontWeight.w600,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side: BorderSide(
+                              color: isSelected
+                                  ? Colors.green.shade600
+                                  : Colors.grey.shade300,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
+
+              // Articles List
+              Expanded(
+                child: _filteredArticles.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.article,
+                              size: 80,
+                              color: Colors.grey.shade300,
+                            ),
+                            const SizedBox(height: 20),
+                            Text(
+                              'No articles found',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey.shade600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        itemCount: _filteredArticles.length,
+                        itemBuilder: (context, index) {
+                          final article = _filteredArticles[index];
+                          return _buildArticleCard(article, index);
+                        },
+                      ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildArticlesList() {
-    final articles = [
-      {
-        'title': 'Understanding Plant Diseases',
-        'excerpt': 'Learn how to identify and manage common plant diseases...',
-        'author': 'Dr. Jane Kimani',
-        'date': 'Dec 1, 2025',
-      },
-      {
-        'title': 'Soil Health Management',
-        'excerpt':
-            'Tips for maintaining healthy soil for better crop yields...',
-        'author': 'Prof. John Kipchoge',
-        'date': 'Nov 25, 2025',
-      },
-      {
-        'title': 'Water Conservation Techniques',
-        'excerpt': 'Efficient irrigation methods for dry seasons...',
-        'author': 'Dr. Mary Mwai',
-        'date': 'Nov 20, 2025',
-      },
-    ];
-
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: articles.length,
-      itemBuilder: (context, index) {
-        final article = articles[index];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 16),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300),
-            borderRadius: BorderRadius.circular(12),
+  Widget _buildArticleCard(Map<String, dynamic> article, int index) {
+    return GestureDetector(
+      onTap: () {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Opening: ${article['title']}'),
+            duration: const Duration(seconds: 2),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                article['title']!,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 15),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          border: Border.all(color: Colors.grey.shade200),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Header with icon and category
+            Container(
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: (article['color'] as Color).withOpacity(0.1),
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(15),
+                  topRight: Radius.circular(15),
+                ),
               ),
-              const SizedBox(height: 8),
-              Text(
-                article['excerpt']!,
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Row(
                 children: [
-                  Text(
-                    article['author']!,
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: article['color'] as Color,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Icon(
+                      article['icon'] as IconData,
+                      color: Colors.white,
+                      size: 24,
+                    ),
                   ),
-                  Text(
-                    article['date']!,
-                    style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          article['category'] as String,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey.shade600,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          article['title'] as String,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      article['isBookmarked']
+                          ? Icons.bookmark
+                          : Icons.bookmark_border,
+                      color: article['isBookmarked']
+                          ? Colors.amber
+                          : Colors.grey.shade400,
+                    ),
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            article['isBookmarked']
+                                ? 'Removed from bookmarks'
+                                : 'Added to bookmarks',
+                          ),
+                          duration: const Duration(seconds: 1),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
-              GestureDetector(
-                onTap: () {},
-                child: Text(
-                  'Read More →',
-                  style: TextStyle(
-                    color: Colors.green.shade700,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildVideosList() {
-    final videos = [
-      {'title': 'Tomato Disease Management', 'duration': '12:45'},
-      {'title': 'Maize Planting Guide', 'duration': '8:20'},
-      {'title': 'Pest Control Methods', 'duration': '15:30'},
-    ];
-
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: videos.length,
-      itemBuilder: (context, index) {
-        final video = videos[index];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 16),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Container(
-                height: 180,
-                color: Colors.grey.shade300,
-                child: Center(
-                  child: Icon(
-                    Icons.play_circle_outline,
-                    size: 64,
-                    color: Colors.green.shade700,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      video['title']!,
-                      style: Theme.of(context).textTheme.titleMedium,
+            ),
+            // Content
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    article['excerpt'] as String,
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: Colors.grey.shade700,
+                      height: 1.5,
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      'Duration: ${video['duration']}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey.shade600,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.access_time,
+                        size: 14,
+                        color: Colors.grey.shade500,
                       ),
-                    ),
-                  ],
-                ),
+                      const SizedBox(width: 5),
+                      Text(
+                        '${(index + 1) * 5} min read',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),
+                      const Spacer(),
+                      TextButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(Icons.arrow_forward, size: 16),
+                        label: const Text('Read More'),
+                        style: TextButton.styleFrom(
+                          foregroundColor: Colors.green.shade600,
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget _buildGuidesList() {
-    final guides = [
-      'Getting Started with Agri Clinic Hub',
-      'Setting Up Your Farm Profile',
-      'Understanding Disease Scan Results',
-      'Using Voice Mode',
-      'Offline Mode Guide',
-    ];
-
-    return ListView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: guides.length,
-      itemBuilder: (context, index) {
-        return Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  guides[index],
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-              Icon(Icons.arrow_forward, color: Colors.green.shade700),
-            ],
-          ),
-        );
-      },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

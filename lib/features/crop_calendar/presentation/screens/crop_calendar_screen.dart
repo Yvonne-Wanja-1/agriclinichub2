@@ -49,16 +49,6 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
     _selectedMonth = DateTime.now();
   }
 
-  List<Map<String, dynamic>> get _currentMonthEvents {
-    return _events
-        .where(
-          (event) =>
-              event['date'].month == _selectedMonth.month &&
-              event['date'].year == _selectedMonth.year,
-        )
-        .toList();
-  }
-
   List<Map<String, dynamic>> get _upcomingEvents {
     return _events
         .where((event) => event['date'].isAfter(DateTime.now()))

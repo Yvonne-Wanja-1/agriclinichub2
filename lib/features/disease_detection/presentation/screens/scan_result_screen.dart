@@ -11,13 +11,12 @@ class ScanResultScreen extends StatefulWidget {
 }
 
 class _ScanResultScreenState extends State<ScanResultScreen> {
-  late Future<void> _analysisFuture;
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _analysisFuture = _performAnalysis();
+    _performAnalysis();
   }
 
   Future<void> _performAnalysis() async {
@@ -172,7 +171,7 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
                         _buildRecommendation(
                           'Remove affected leaves',
                           'Prune infected leaves and dispose of them properly',
-                          Icons.pruning_shears,
+                          Icons.local_florist,
                         ),
                         const SizedBox(height: 12),
                         _buildRecommendation(
