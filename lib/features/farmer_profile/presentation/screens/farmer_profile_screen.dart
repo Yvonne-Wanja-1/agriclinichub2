@@ -31,10 +31,7 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Colors.green.shade50,
-              Colors.white,
-            ],
+            colors: [Colors.green.shade50, Colors.white],
           ),
         ),
         child: SafeArea(
@@ -121,8 +118,8 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                       Text(
                         'Personal Information',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 15),
 
@@ -146,8 +143,8 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                       Text(
                         'Farm Information',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 15),
 
@@ -278,10 +275,7 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
           Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey.shade600,
-            ),
+            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
           ),
         ],
       ),

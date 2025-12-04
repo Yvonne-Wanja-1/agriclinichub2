@@ -24,9 +24,9 @@ class _ScanScreenState extends State<ScanScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString()}')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -45,9 +45,9 @@ class _ScanScreenState extends State<ScanScreen> {
       }
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e.toString()}')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -68,10 +68,7 @@ class _ScanScreenState extends State<ScanScreen> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Colors.green.shade50,
-              Colors.white,
-            ],
+            colors: [Colors.green.shade50, Colors.white],
           ),
         ),
         child: SafeArea(
@@ -95,7 +92,8 @@ class _ScanScreenState extends State<ScanScreen> {
                         const SizedBox(height: 20),
                         Text(
                           'Scan Your Plant',
-                          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          style: Theme.of(context).textTheme.headlineSmall
+                              ?.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey.shade800,
                               ),
@@ -104,9 +102,8 @@ class _ScanScreenState extends State<ScanScreen> {
                         Text(
                           'Detect diseases and get treatment recommendations',
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: Colors.grey.shade600,
-                          ),
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: Colors.grey.shade600),
                         ),
                       ],
                     ),
@@ -179,7 +176,9 @@ class _ScanScreenState extends State<ScanScreen> {
                           height: 25,
                           width: 25,
                           child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
                             strokeWidth: 3,
                           ),
                         ),
@@ -221,7 +220,10 @@ class _ScanScreenState extends State<ScanScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.tips_and_updates, color: Colors.green.shade600),
+                            Icon(
+                              Icons.tips_and_updates,
+                              color: Colors.green.shade600,
+                            ),
                             const SizedBox(width: 10),
                             Text(
                               'Tips for Best Results',
@@ -256,10 +258,7 @@ class _ScanScreenState extends State<ScanScreen> {
         children: [
           Icon(Icons.check_circle, size: 16, color: Colors.green.shade600),
           const SizedBox(width: 10),
-          Text(
-            tip,
-            style: TextStyle(color: Colors.grey.shade700),
-          ),
+          Text(tip, style: TextStyle(color: Colors.grey.shade700)),
         ],
       ),
     );
