@@ -10,7 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 4; // Home is in the middle (index 4)
   bool _isOnline = true;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -250,19 +250,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _navigateToScreen(int index) {
     switch (index) {
-      case 1:
+      case 0: // Scan
         Navigator.of(context).pushNamed('/scan').then((_) {
-          setState(() => _selectedIndex = 0);
+          setState(() => _selectedIndex = 4);
         });
         break;
-      case 2:
+      case 1: // History
         Navigator.of(context).pushNamed('/history').then((_) {
-          setState(() => _selectedIndex = 0);
+          setState(() => _selectedIndex = 4);
         });
         break;
-      case 3:
+      case 2: // Profile
         Navigator.of(context).pushNamed('/profile').then((_) {
-          setState(() => _selectedIndex = 0);
+          setState(() => _selectedIndex = 4);
+        });
+        break;
+      case 3: // More (Crop Calendar)
+        Navigator.of(context).pushNamed('/calendar').then((_) {
+          setState(() => _selectedIndex = 4);
         });
         break;
     }

@@ -32,34 +32,38 @@ class ConvexBottomNav extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildNavItem(0, Icons.home, 'Home'),
-                _buildNavItem(1, Icons.camera_alt, 'Scan'),
-                SizedBox(width: 80), // Space for convex curve
-                _buildNavItem(2, Icons.history, 'History'),
-                _buildNavItem(3, Icons.person, 'Profile'),
+                _buildNavItem(0, Icons.camera_alt, 'Scan'),
+                _buildNavItem(1, Icons.history, 'History'),
+                SizedBox(width: 100), // Space for convex curve
+                _buildNavItem(2, Icons.person, 'Profile'),
+                _buildNavItem(3, Icons.shopping_cart, 'More'),
               ],
             ),
             Positioned(
-              top: -20,
-              left: MediaQuery.of(context).size.width / 2 - 40,
+              top: -25,
+              left: MediaQuery.of(context).size.width / 2 - 45,
               child: GestureDetector(
                 onTap: () => onTap(4),
                 child: Container(
-                  width: 80,
-                  height: 80,
+                  width: 90,
+                  height: 90,
                   decoration: BoxDecoration(
-                    color: Colors.green.shade500,
+                    color: Colors.white,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.green.shade400.withOpacity(0.4),
+                        color: Colors.black.withOpacity(0.15),
                         blurRadius: 12,
                         spreadRadius: 2,
                       ),
                     ],
                   ),
                   child: Center(
-                    child: Icon(Icons.add, color: Colors.white, size: 32),
+                    child: Icon(
+                      Icons.home,
+                      color: Colors.green.shade600,
+                      size: 40,
+                    ),
                   ),
                 ),
               ),
@@ -74,28 +78,43 @@ class ConvexBottomNav extends StatelessWidget {
     bool isActive = currentIndex == index;
     return GestureDetector(
       onTap: () => onTap(index),
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              color: isActive ? Colors.white : Colors.black87,
-              size: 24,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: isActive ? Colors.white : Colors.white.withOpacity(0.3),
+              shape: BoxShape.circle,
+              boxShadow: isActive
+                  ? [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 8,
+                      ),
+                    ]
+                  : [],
             ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: TextStyle(
-                color: isActive ? Colors.white : Colors.black87,
-                fontSize: 12,
-                fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+            child: Center(
+              child: Icon(
+                icon,
+                color: isActive ? Colors.green.shade600 : Colors.white,
+                size: 24,
               ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 10,
+              fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ],
       ),
     );
   }

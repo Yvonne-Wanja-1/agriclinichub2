@@ -12,7 +12,7 @@ class ScanScreen extends StatefulWidget {
 class _ScanScreenState extends State<ScanScreen> {
   final ImagePicker _imagePicker = ImagePicker();
   bool _isLoading = false;
-  int _selectedIndex = 1;
+  int _selectedIndex = 0; // Scan is at index 0
 
   Future<void> _captureImage() async {
     try {
@@ -262,19 +262,24 @@ class _ScanScreenState extends State<ScanScreen> {
 
   void _navigateToScreen(int index) {
     switch (index) {
-      case 0:
-        Navigator.of(context).pushNamed('/home').then((_) {
-          setState(() => _selectedIndex = 1);
-        });
-        break;
-      case 2:
+      case 1: // History
         Navigator.of(context).pushNamed('/history').then((_) {
-          setState(() => _selectedIndex = 1);
+          setState(() => _selectedIndex = 0);
         });
         break;
-      case 3:
+      case 2: // Profile
         Navigator.of(context).pushNamed('/profile').then((_) {
-          setState(() => _selectedIndex = 1);
+          setState(() => _selectedIndex = 0);
+        });
+        break;
+      case 3: // More (Crop Calendar)
+        Navigator.of(context).pushNamed('/calendar').then((_) {
+          setState(() => _selectedIndex = 0);
+        });
+        break;
+      case 4: // Home (center)
+        Navigator.of(context).pushNamed('/home').then((_) {
+          setState(() => _selectedIndex = 0);
         });
         break;
     }
