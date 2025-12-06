@@ -46,7 +46,7 @@ class AppRouter {
       case AppRouter.home:
         return MaterialPageRoute(
           builder: (_) =>
-              BottomNavWrapper(initialIndex: 4, child: const HomeScreen()),
+              BottomNavWrapper(initialIndex: 2, child: const HomeScreen()),
         );
       case AppRouter.scan:
         return MaterialPageRoute(
@@ -68,7 +68,7 @@ class AppRouter {
       case AppRouter.profile:
         return MaterialPageRoute(
           builder: (_) => BottomNavWrapper(
-            initialIndex: 2,
+            initialIndex: 4,
             child: const FarmerProfileScreen(),
           ),
         );
