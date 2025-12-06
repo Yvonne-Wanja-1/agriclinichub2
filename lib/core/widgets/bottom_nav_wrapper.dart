@@ -1,41 +1,48 @@
 import 'package:flutter/material.dart';
-import 'convex_bottom_nav.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 class BottomNavWrapper extends StatefulWidget {
-  final int initialIndex;
   final Widget child;
+  final int initialIndex;
 
-  const BottomNavWrapper({
-    Key? key,
-    required this.initialIndex,
-    required this.child,
-  }) : super(key: key);
+  const BottomNavWrapper({Key? key, required this.child, this.initialIndex = 4})
+    : super(key: key);
 
   @override
   State<BottomNavWrapper> createState() => _BottomNavWrapperState();
 }
 
 class _BottomNavWrapperState extends State<BottomNavWrapper> {
-  late int _currentIndex;
+  late int _selectedIndex;
 
   @override
   void initState() {
     super.initState();
-    _currentIndex = widget.initialIndex;
+    _selectedIndex = widget.initialIndex;
   }
 
   void _onNavTap(int index) {
     setState(() {
-      _currentIndex = index;
+      _selectedIndex = index;
     });
 
-    // Define route names based on index
-    final routes = ['/scan', '/history', '/profile', '/calendar', '/home'];
-
-    if (index < routes.length) {
-      Navigator.of(
-        context,
-      ).pushNamedAndRemoveUntil(routes[index], (route) => false);
+    // Navigate based on the selected index
+    switch (index) {
+      case 0:
+        Navigator.of(context).pushNamed('/scan');
+        break;
+      case 1:
+        Navigator.of(context).pushNamed('/history');
+        break;
+      case 2:
+        Navigator.of(context).pushNamed('/calendar');
+        break;
+      case 3:
+        Navigator.of(context).pushNamed('/profile');
+        break;
+      case 4:
+        Navigator.of(context).pushNamed('/home');
+        break;
     }
   }
 
@@ -43,9 +50,21 @@ class _BottomNavWrapperState extends State<BottomNavWrapper> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: widget.child,
-      bottomNavigationBar: ConvexBottomNav(
-        currentIndex: _currentIndex,
+      bottomNavigationBar: CurvedNavigationBar(
+        index: _selectedIndex,
+        height: 75.0,
+        items: [
+          Icon(Icons.camera_alt, size: 30, color: Colors.white),
+          Icon(Icons.history, size: 30, color: Colors.white),
+          Icon(Icons.calendar_month, size: 30, color: Colors.white),
+          Icon(Icons.person, size: 30, color: Colors.white),
+          Icon(Icons.home, size: 30, color: Colors.white),
+        ],
+        color: Colors.green.shade600,
+        backgroundColor: Colors.white,
+        animationDuration: const Duration(milliseconds: 300),
         onTap: _onNavTap,
+        letIndexChange: (index) => true,
       ),
     );
   }
