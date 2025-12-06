@@ -49,24 +49,60 @@ class _BottomNavWrapperState extends State<BottomNavWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: widget.child,
-      bottomNavigationBar: CurvedNavigationBar(
-        index: _selectedIndex,
-        height: 75.0,
-        items: [
-          Icon(Icons.camera_alt, size: 30, color: Colors.white),
-          Icon(Icons.history, size: 30, color: Colors.white),
-          Icon(Icons.home, size: 30, color: Colors.white),
-          Icon(Icons.calendar_month, size: 30, color: Colors.white),
-          Icon(Icons.person, size: 30, color: Colors.white),
-        ],
-        color: Colors.green.shade600,
-        backgroundColor: Colors.white,
-        animationDuration: const Duration(milliseconds: 300),
-        onTap: _onNavTap,
-        letIndexChange: (index) => true,
-      ),
+    return Stack(
+      children: [
+        Scaffold(
+          body: Builder(
+            builder: (scaffoldContext) {
+              return widget.child;
+            },
+          ),
+          bottomNavigationBar: Builder(
+            builder: (scaffoldContext) {
+              final scaffold = Scaffold.maybeOf(scaffoldContext);
+              final isDrawerOpen = scaffold?.isDrawerOpen ?? false;
+
+              if (isDrawerOpen) {
+                return const SizedBox.shrink();
+              }
+
+              return CurvedNavigationBar(
+                index: _selectedIndex,
+                height: 60.0,
+                items: [
+                  Icon(Icons.camera_alt, size: 30, color: Colors.white),
+                  Icon(Icons.history, size: 30, color: Colors.white),
+                  Icon(Icons.home, size: 30, color: Colors.white),
+                  Icon(Icons.calendar_month, size: 30, color: Colors.white),
+                  Icon(Icons.person, size: 30, color: Colors.white),
+                ],
+                color: Colors.green.shade600,
+                backgroundColor: Colors.white,
+                animationDuration: const Duration(milliseconds: 300),
+                onTap: _onNavTap,
+                letIndexChange: (index) => true,
+              );
+            },
+          ),
+        ),
+        Positioned(
+          bottom: 80,
+          right: 16,
+          child: FloatingActionButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Chatbot feature coming soon!'),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+            },
+            backgroundColor: Colors.green.shade600,
+            tooltip: 'Chat with AgriBot',
+            child: const Icon(Icons.smart_toy, color: Colors.white),
+          ),
+        ),
+      ],
     );
   }
 }

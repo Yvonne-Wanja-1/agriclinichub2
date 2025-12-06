@@ -83,7 +83,10 @@ class _ScanHistoryScreenState extends State<ScanHistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Scan History'),
+        title: const Text(
+          'Scan History',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         backgroundColor: Colors.green.shade600,
         elevation: 0,
@@ -151,25 +154,45 @@ class _ScanHistoryScreenState extends State<ScanHistoryScreen> {
                   ),
                 const SizedBox(height: 32),
 
-                // Scan New Plant Button
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/scan');
-                    },
-                    icon: const Icon(Icons.camera_alt),
-                    label: const Text('Scan New Plant'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green.shade600,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                // Scan New Plant and Animal Buttons
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/scan');
+                        },
+                        icon: const Icon(Icons.local_florist),
+                        label: const Text('Scan Plant'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green.shade600,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 5,
+                        ),
                       ),
-                      elevation: 5,
                     ),
-                  ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed('/scan');
+                        },
+                        icon: const Icon(Icons.pets),
+                        label: const Text('Scan Animal'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green.shade600,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          elevation: 5,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 20),
               ],
@@ -250,10 +273,7 @@ class _ScanHistoryScreenState extends State<ScanHistoryScreen> {
           ),
         ),
         const SizedBox(height: 4),
-        Text(
-          label,
-          style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
-        ),
+        Text(label, style: TextStyle(fontSize: 12, color: Colors.black87)),
       ],
     );
   }
@@ -274,7 +294,7 @@ class _ScanHistoryScreenState extends State<ScanHistoryScreen> {
         },
         decoration: InputDecoration(
           hintText: 'Search scans...',
-          hintStyle: TextStyle(color: Colors.grey.shade500),
+          hintStyle: TextStyle(color: Colors.black54),
           prefixIcon: Icon(Icons.search, color: Colors.green.shade600),
           suffixIcon: _searchController.text.isNotEmpty
               ? IconButton(
@@ -382,7 +402,7 @@ class _ScanHistoryScreenState extends State<ScanHistoryScreen> {
           Text(
             'Start scanning plants to build your history',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey.shade600),
+            style: TextStyle(color: Colors.black87),
           ),
           const SizedBox(height: 40),
         ],
@@ -421,9 +441,10 @@ class _ScanHistoryScreenState extends State<ScanHistoryScreen> {
           border: Border.all(color: Colors.grey.shade200),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
+              color: Colors.green.shade400,
+              blurRadius: 5,
+              offset: const Offset(0, 4),
+              spreadRadius: 2,
             ),
           ],
         ),
@@ -451,7 +472,10 @@ class _ScanHistoryScreenState extends State<ScanHistoryScreen> {
                       Text(
                         crop,
                         style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                            ?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
                       ),
                       const SizedBox(height: 4),
                       Row(
@@ -502,7 +526,7 @@ class _ScanHistoryScreenState extends State<ScanHistoryScreen> {
               children: [
                 Text(
                   'Confidence:',
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  style: TextStyle(fontSize: 12, color: Colors.black87),
                 ),
                 const SizedBox(width: 8),
                 Expanded(

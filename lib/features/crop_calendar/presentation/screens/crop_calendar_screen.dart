@@ -194,10 +194,6 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
         centerTitle: true,
         backgroundColor: Colors.green.shade600,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
         actions: [
           IconButton(icon: const Icon(Icons.menu), onPressed: _openMenu),
         ],
@@ -231,7 +227,10 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
                       Text(
                         DateFormat('MMMM yyyy').format(_selectedMonth),
                         style: Theme.of(context).textTheme.headlineSmall
-                            ?.copyWith(fontWeight: FontWeight.bold),
+                            ?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black87,
+                            ),
                       ),
                       IconButton(
                         icon: Icon(
@@ -273,8 +272,11 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
                   // Upcoming Events
                   Text(
                     'Upcoming Events',
+                    textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                      fontSize: 22,
                     ),
                   ),
                   const SizedBox(height: 15),

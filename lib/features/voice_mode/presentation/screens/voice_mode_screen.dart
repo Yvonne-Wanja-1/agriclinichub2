@@ -68,28 +68,50 @@ class _VoiceModeScreenState extends State<VoiceModeScreen> {
 
                   // Language Selection
                   Text(
-                    'Select Language',
+                    'Select Language:',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: Colors.black87,
                     ),
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
                     value: _selectedLanguage,
-                    items: const [
+                    items: [
                       DropdownMenuItem(
                         value: 'English',
-                        child: Text('English'),
+                        child: Text(
+                          'English',
+                          style: TextStyle(color: Colors.green.shade600),
+                        ),
                       ),
                       DropdownMenuItem(
                         value: 'Kiswahili',
-                        child: Text('Kiswahili'),
+                        child: Text(
+                          'Kiswahili',
+                          style: TextStyle(color: Colors.green.shade600),
+                        ),
                       ),
-                      DropdownMenuItem(value: 'Kikuyu', child: Text('Kikuyu')),
-                      DropdownMenuItem(value: 'Luo', child: Text('Luo')),
+                      DropdownMenuItem(
+                        value: 'Kikuyu',
+                        child: Text(
+                          'Kikuyu',
+                          style: TextStyle(color: Colors.green.shade600),
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: 'Luo',
+                        child: Text(
+                          'Luo',
+                          style: TextStyle(color: Colors.green.shade600),
+                        ),
+                      ),
                       DropdownMenuItem(
                         value: 'Kalenjin',
-                        child: Text('Kalenjin'),
+                        child: Text(
+                          'Kalenjin',
+                          style: TextStyle(color: Colors.green.shade600),
+                        ),
                       ),
                     ],
                     onChanged: (value) {
@@ -98,11 +120,11 @@ class _VoiceModeScreenState extends State<VoiceModeScreen> {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
+                        borderSide: BorderSide(color: Colors.black87),
                       ),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
+                        borderSide: BorderSide(color: Colors.black87),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
@@ -113,6 +135,10 @@ class _VoiceModeScreenState extends State<VoiceModeScreen> {
                       ),
                       filled: true,
                       fillColor: Colors.white,
+                      suffixIcon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.green.shade600,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 40),
@@ -146,14 +172,7 @@ class _VoiceModeScreenState extends State<VoiceModeScreen> {
                           ],
                         ),
                         child: Center(
-                          child: AnimatedIcon(
-                            icon: AnimatedIcons.play_pause,
-                            progress: AlwaysStoppedAnimation(
-                              _isListening ? 1.0 : 0.0,
-                            ),
-                            size: 60,
-                            color: Colors.white,
-                          ),
+                          child: Icon(Icons.mic, size: 60, color: Colors.white),
                         ),
                       ),
                     ),
@@ -169,7 +188,7 @@ class _VoiceModeScreenState extends State<VoiceModeScreen> {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade700,
+                        color: Colors.black87,
                       ),
                     ),
                   ),
@@ -289,6 +308,7 @@ class _VoiceModeScreenState extends State<VoiceModeScreen> {
                     'Voice Command Suggestions',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
+                      color: Colors.green.shade600,
                     ),
                   ),
                   const SizedBox(height: 15),
@@ -315,9 +335,9 @@ class _VoiceModeScreenState extends State<VoiceModeScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey.shade50,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: Colors.green.shade200),
       ),
       child: Row(
         children: [
@@ -338,7 +358,7 @@ class _VoiceModeScreenState extends State<VoiceModeScreen> {
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  style: TextStyle(fontSize: 11, color: Colors.grey.shade600),
+                  style: TextStyle(fontSize: 11, color: Colors.black87),
                 ),
               ],
             ),

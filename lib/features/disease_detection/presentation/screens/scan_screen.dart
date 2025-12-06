@@ -11,6 +11,7 @@ class ScanScreen extends StatefulWidget {
 class _ScanScreenState extends State<ScanScreen> {
   final ImagePicker _imagePicker = ImagePicker();
   bool _isLoading = false;
+  bool _scanPlant = true; // true for plant, false for animal
 
   Future<void> _captureImage() async {
     try {
@@ -79,19 +80,103 @@ class _ScanScreenState extends State<ScanScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: 40),
+                  // Toggle between Plant and Animal
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.green.shade300),
+                    ),
+                    padding: const EdgeInsets.all(4),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => setState(() => _scanPlant = true),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              decoration: BoxDecoration(
+                                color: _scanPlant
+                                    ? Colors.green.shade100
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.local_florist,
+                                    color: _scanPlant
+                                        ? Colors.green.shade700
+                                        : Colors.grey,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Plant',
+                                    style: TextStyle(
+                                      color: _scanPlant
+                                          ? Colors.green.shade700
+                                          : Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => setState(() => _scanPlant = false),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              decoration: BoxDecoration(
+                                color: !_scanPlant
+                                    ? Colors.green.shade100
+                                    : Colors.transparent,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.pets,
+                                    color: !_scanPlant
+                                        ? Colors.green.shade700
+                                        : Colors.grey,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Animal',
+                                    style: TextStyle(
+                                      color: !_scanPlant
+                                          ? Colors.green.shade700
+                                          : Colors.grey,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 40),
                   // Header
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Column(
                       children: [
                         Icon(
-                          Icons.local_florist,
+                          _scanPlant ? Icons.local_florist : Icons.pets,
                           size: 80,
                           color: Colors.green.shade600,
                         ),
                         const SizedBox(height: 20),
                         Text(
-                          'Scan Your Plant',
+                          _scanPlant ? 'Scan Your Plant' : 'Scan Your Animal',
                           style: Theme.of(context).textTheme.headlineSmall
                               ?.copyWith(
                                 fontWeight: FontWeight.bold,
@@ -100,7 +185,9 @@ class _ScanScreenState extends State<ScanScreen> {
                         ),
                         const SizedBox(height: 10),
                         Text(
-                          'Detect diseases and get treatment recommendations',
+                          _scanPlant
+                              ? 'Detect plant diseases and get treatment recommendations'
+                              : 'Monitor animal health and detect conditions',
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(color: Colors.grey.shade600),
