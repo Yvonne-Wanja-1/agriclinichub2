@@ -24,6 +24,7 @@ class AgriClinicHubApp extends StatelessWidget {
           seedColor: Colors.green,
           brightness: Brightness.light,
         ),
+        scaffoldBackgroundColor: Colors.white,
       ),
       darkTheme: ThemeData(
         useMaterial3: true,
@@ -38,4 +39,3 @@ class AgriClinicHubApp extends StatelessWidget {
     );
   }
 }
-
