@@ -42,10 +42,14 @@ class _LanguageScreenState extends State<LanguageScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: _selectedLanguage == code ? Colors.green.shade100 : Colors.white,
+          color: _selectedLanguage == code
+              ? Colors.green.shade100
+              : Colors.white,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: _selectedLanguage == code ? Colors.green.shade400 : Colors.grey.shade300,
+            color: _selectedLanguage == code
+                ? Colors.green.shade400
+                : Colors.grey.shade300,
             width: 2,
           ),
         ),
@@ -57,7 +61,9 @@ class _LanguageScreenState extends State<LanguageScreen> {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: _selectedLanguage == code ? Colors.green.shade700 : Colors.black87,
+                color: _selectedLanguage == code
+                    ? Colors.green.shade700
+                    : Colors.black87,
               ),
             ),
             if (_selectedLanguage == code)
