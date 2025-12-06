@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'convex_bottom_nav.dart';
 
 class BottomNavWrapper extends StatefulWidget {
-  final Widget child;
   final int initialIndex;
+  final Widget child;
 
-  const BottomNavWrapper({Key? key, required this.child, this.initialIndex = 4})
-    : super(key: key);
+  const BottomNavWrapper({
+    Key? key,
+    required this.initialIndex,
+    required this.child,
+  }) : super(key: key);
 
   @override
   State<BottomNavWrapper> createState() => _BottomNavWrapperState();
@@ -25,36 +28,15 @@ class _BottomNavWrapperState extends State<BottomNavWrapper> {
     setState(() {
       _currentIndex = index;
     });
-    _navigateToScreen(index);
-  }
 
-  void _navigateToScreen(int index) {
-    String route;
-    switch (index) {
-      case 0: // Scan
-        route = '/scan';
-        break;
-      case 1: // History
-        route = '/history';
-        break;
-      case 2: // Profile
-        route = '/profile';
-        break;
-      case 3: // Calendar
-        route = '/calendar';
-        break;
-      case 4: // Home
-        route = '/home';
-        break;
-      default:
-        route = '/home';
+    // Define route names based on index
+    final routes = ['/scan', '/history', '/profile', '/calendar', '/home'];
+
+    if (index < routes.length) {
+      Navigator.of(
+        context,
+      ).pushNamedAndRemoveUntil(routes[index], (route) => false);
     }
-
-    Navigator.of(context).pushNamed(route).then((_) {
-      setState(() {
-        // Keep the current index when returning from another screen
-      });
-    });
   }
 
   @override
