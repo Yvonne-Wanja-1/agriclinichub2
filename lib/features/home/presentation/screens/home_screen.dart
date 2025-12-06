@@ -48,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
+                border: Border.all(color: Colors.green.shade600, width: 2),
               ),
               child: Image.asset('assets/images/logo.png'),
             ),
