@@ -40,6 +40,7 @@ dependencies:
   # UI & Design
   cupertino_icons: ^1.0.8
   material_design_icons_flutter: ^7.0.7296
+  curved_navigation_bar: ^1.0.6
   
   # Image handling & Camera
   image_picker: ^0.8.9
