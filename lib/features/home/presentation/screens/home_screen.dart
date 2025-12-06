@@ -42,6 +42,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 _scaffoldKey.currentState?.openEndDrawer();
               },
             ),
+            const SizedBox(width: 4),
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: Image.asset('assets/images/logo.png'),
+            ),
             const SizedBox(width: 8),
             const Text(
               'Agri Clinic Hub',
@@ -95,16 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Center(
-              child: Image.asset(
-                'assets/images/logo.png',
-                height: 40,
-                width: 40,
-              ),
-            ),
-          ),
         ],
       ),
       body: HomeContent(isOnline: _isOnline),
@@ -116,89 +116,96 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               DrawerHeader(
                 decoration: BoxDecoration(color: Colors.green.shade400),
-                child: Row(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      'assets/images/logo.png',
+                    Container(
                       width: 64,
                       height: 64,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Image.asset('assets/images/logo.png'),
                     ),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          'Agri Clinic Hub',
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Smart Farming Assistant',
-                          style: TextStyle(color: Colors.black54, fontSize: 12),
-                        ),
-                      ],
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Agri Clinic Hub',
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
                   ],
                 ),
               ),
-              ListTile(
-                leading: const Icon(Icons.person),
-                title: const Text('Profile'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushNamed('/profile');
-                },
+              _buildDrawerMenuItem(
+                context,
+                Icons.person,
+                'Profile',
+                '/profile',
               ),
-              ListTile(
-                leading: const Icon(Icons.history),
-                title: const Text('Scan History'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushNamed('/history');
-                },
+              _buildDrawerMenuItem(
+                context,
+                Icons.history,
+                'Scan History',
+                '/history',
               ),
-              ListTile(
-                leading: const Icon(Icons.calendar_month),
-                title: const Text('Crop Calendar'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushNamed('/calendar');
-                },
+              _buildDrawerMenuItem(
+                context,
+                Icons.calendar_month,
+                'Crop Calendar',
+                '/calendar',
               ),
-              ListTile(
-                leading: const Icon(Icons.school),
-                title: const Text('Education'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushNamed('/education');
-                },
+              _buildDrawerMenuItem(
+                context,
+                Icons.article,
+                'Articles',
+                '/articles',
               ),
-              ListTile(
-                leading: const Icon(Icons.mic),
-                title: const Text('Voice Mode'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushNamed('/voice-mode');
-                },
+              _buildDrawerMenuItem(
+                context,
+                Icons.mic,
+                'Voice Mode',
+                '/voice-mode',
+              ),
+              _buildDrawerMenuItem(
+                context,
+                Icons.language,
+                'Language',
+                '/language',
+              ),
+              _buildDrawerMenuItem(
+                context,
+                Icons.phone,
+                'Contact Us',
+                '/contact-us',
+              ),
+              _buildDrawerMenuItem(
+                context,
+                Icons.info,
+                'About Us',
+                '/about-us',
               ),
               const Spacer(),
               const Divider(),
-              ListTile(
-                leading: const Icon(Icons.settings),
-                title: const Text('Settings'),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushNamed('/settings');
-                },
+              _buildDrawerMenuItem(
+                context,
+                Icons.settings,
+                'Settings',
+                '/settings',
               ),
               ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text('Logout'),
+                leading: const Icon(Icons.logout, color: Colors.black87),
+                title: const Text(
+                  'Logout',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 onTap: () {
                   Navigator.of(context).pop();
                   // add logout logic here
@@ -253,6 +260,28 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildDrawerMenuItem(
+    BuildContext context,
+    IconData icon,
+    String title,
+    String route,
+  ) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.black87),
+      title: Text(
+        title,
+        style: const TextStyle(
+          color: Colors.black87,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      onTap: () {
+        Navigator.of(context).pop();
+        Navigator.of(context).pushNamed(route);
+      },
     );
   }
 
@@ -422,10 +451,10 @@ class _HomeContentState extends State<HomeContent> {
               ),
               _buildActionCard(
                 context,
-                Icons.school,
-                'Learn',
+                Icons.article,
+                'Articles',
                 Colors.purple,
-                () => Navigator.of(context).pushNamed('/education'),
+                () => Navigator.of(context).pushNamed('/articles'),
               ),
               _buildActionCard(
                 context,

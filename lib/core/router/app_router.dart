@@ -9,9 +9,12 @@ import '../../features/scan_history/presentation/screens/scan_history_screen.dar
 import '../../features/farmer_profile/presentation/screens/farmer_profile_screen.dart';
 import '../../features/farmer_profile/presentation/screens/edit_profile_screen.dart';
 import '../../features/crop_calendar/presentation/screens/crop_calendar_screen.dart';
-import '../../features/education/presentation/screens/education_screen.dart';
+import '../../features/articles/presentation/screens/articles_screen.dart';
 import '../../features/voice_mode/presentation/screens/voice_mode_screen.dart';
 import '../../features/settings/presentation/screens/settings_screen.dart';
+import '../../features/language/presentation/screens/language_screen.dart';
+import '../../features/contact_us/presentation/screens/contact_us_screen.dart';
+import '../../features/about_us/presentation/screens/about_us_screen.dart';
 
 class AppRouter {
   static const String splash = '/';
@@ -24,9 +27,12 @@ class AppRouter {
   static const String profile = '/profile';
   static const String editProfile = '/edit-profile';
   static const String cropCalendar = '/calendar';
-  static const String education = '/education';
+  static const String articles = '/articles';
   static const String voiceMode = '/voice-mode';
   static const String settings = '/settings';
+  static const String language = '/language';
+  static const String contactUs = '/contact-us';
+  static const String aboutUs = '/about-us';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -53,12 +59,18 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const EditProfileScreen());
       case AppRouter.cropCalendar:
         return MaterialPageRoute(builder: (_) => const CropCalendarScreen());
-      case AppRouter.education:
-        return MaterialPageRoute(builder: (_) => const EducationScreen());
+      case AppRouter.articles:
+        return MaterialPageRoute(builder: (_) => const ArticlesScreen());
       case AppRouter.voiceMode:
         return MaterialPageRoute(builder: (_) => const VoiceModeScreen());
       case AppRouter.settings:
         return MaterialPageRoute(builder: (_) => const SettingsScreen());
+      case AppRouter.language:
+        return MaterialPageRoute(builder: (_) => const LanguageScreen());
+      case AppRouter.contactUs:
+        return MaterialPageRoute(builder: (_) => const ContactUsScreen());
+      case AppRouter.aboutUs:
+        return MaterialPageRoute(builder: (_) => const AboutUsScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
