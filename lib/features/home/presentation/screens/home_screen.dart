@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import '../../../../core/widgets/convex_bottom_nav.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -10,7 +9,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 4; // Home is in the middle (index 4)
   bool _isOnline = true;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -216,13 +214,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: ConvexBottomNav(
-        currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() => _selectedIndex = index);
-          _navigateToScreen(index);
-        },
-      ),
     );
   }
 
@@ -246,31 +237,6 @@ class _HomeScreenState extends State<HomeScreen> {
         Navigator.of(context).pushNamed(route);
       },
     );
-  }
-
-  void _navigateToScreen(int index) {
-    switch (index) {
-      case 0: // Scan
-        Navigator.of(context).pushNamed('/scan').then((_) {
-          setState(() => _selectedIndex = 4);
-        });
-        break;
-      case 1: // History
-        Navigator.of(context).pushNamed('/history').then((_) {
-          setState(() => _selectedIndex = 4);
-        });
-        break;
-      case 2: // Profile
-        Navigator.of(context).pushNamed('/profile').then((_) {
-          setState(() => _selectedIndex = 4);
-        });
-        break;
-      case 3: // More (Crop Calendar)
-        Navigator.of(context).pushNamed('/calendar').then((_) {
-          setState(() => _selectedIndex = 4);
-        });
-        break;
-    }
   }
 }
 

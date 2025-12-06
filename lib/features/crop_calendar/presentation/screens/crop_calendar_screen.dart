@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import '../../../../core/widgets/convex_bottom_nav.dart';
+import 'package:intl/intl.dart';
 
 class CropCalendarScreen extends StatefulWidget {
   const CropCalendarScreen({Key? key}) : super(key: key);
@@ -10,8 +9,7 @@ class CropCalendarScreen extends StatefulWidget {
 }
 
 class _CropCalendarScreenState extends State<CropCalendarScreen> {
-  int _selectedIndex = 3; // More/Calendar is at index 3
-  late DateTime _selectedMonth;
+  DateTime _selectedMonth = DateTime.now();
   final List<Map<String, dynamic>> _events = [
     {
       'date': DateTime(2024, 12, 5),

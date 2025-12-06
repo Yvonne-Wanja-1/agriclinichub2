@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../../core/widgets/convex_bottom_nav.dart';
 
 class ScanHistoryScreen extends StatefulWidget {
   const ScanHistoryScreen({Key? key}) : super(key: key);
@@ -9,7 +8,6 @@ class ScanHistoryScreen extends StatefulWidget {
 }
 
 class _ScanHistoryScreenState extends State<ScanHistoryScreen> {
-  int _selectedIndex = 1; // History is at index 1
   @override
   Widget build(BuildContext context) {
     return Scaffold(
