@@ -16,6 +16,7 @@ class AgriClinicHubApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Agri Clinic Hub',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.green,
         useMaterial3: true,
