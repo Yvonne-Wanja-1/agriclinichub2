@@ -21,8 +21,16 @@ class AgriClinicHubApp extends StatelessWidget {
         primarySwatch: Colors.green,
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.green,
+          seedColor: Colors.green.shade400,
           brightness: Brightness.light,
+        ),
+        scaffoldBackgroundColor: const Color(0xFFF5F9F5),
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Colors.black87),
+          bodyMedium: TextStyle(color: Colors.black87),
+          bodySmall: TextStyle(color: Colors.black54),
+          labelLarge: TextStyle(color: Colors.black87),
+          labelMedium: TextStyle(color: Colors.black87),
         ),
       ),
       darkTheme: ThemeData(
@@ -38,4 +46,3 @@ class AgriClinicHubApp extends StatelessWidget {
     );
   }
 }
-

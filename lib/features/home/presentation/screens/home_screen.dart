@@ -11,6 +11,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   bool _isOnline = true;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -30,11 +31,18 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      backgroundColor: const Color(0xFFF5F9F5),
       appBar: AppBar(
         title: Row(
           children: [
-            Image.asset('assets/images/logo.png', height: 40, width: 40),
-            const SizedBox(width: 12),
+            IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                _scaffoldKey.currentState?.openEndDrawer();
+              },
+            ),
+            const SizedBox(width: 8),
             const Text(
               'Agri Clinic Hub',
               style: TextStyle(fontWeight: FontWeight.bold),
@@ -42,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         elevation: 0,
-        backgroundColor: Colors.green.shade600,
+        backgroundColor: Colors.green.shade400,
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -56,8 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   decoration: BoxDecoration(
                     color: _isOnline
-                        ? Colors.green.shade400
-                        : Colors.grey.shade600,
+                        ? Colors.green.shade300
+                        : Colors.grey.shade400,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -66,7 +74,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         width: 8,
                         height: 8,
                         decoration: BoxDecoration(
-                          color: _isOnline ? Colors.green : Colors.grey,
+                          color: _isOnline
+                              ? Colors.green.shade700
+                              : Colors.grey.shade700,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -74,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         _isOnline ? 'Online' : 'Offline',
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.black87,
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                         ),
@@ -85,61 +95,161 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('Menu coming soon')));
-            },
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Center(
+              child: Image.asset(
+                'assets/images/logo.png',
+                height: 40,
+                width: 40,
+              ),
+            ),
           ),
         ],
       ),
-      body: const HomeContent(),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              blurRadius: 8,
-              offset: const Offset(0, -2),
-            ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
-          ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            backgroundColor: Colors.white,
-            selectedItemColor: Colors.green.shade600,
-            unselectedItemColor: Colors.grey.shade500,
-            currentIndex: _selectedIndex,
-            onTap: (index) {
-              setState(() => _selectedIndex = index);
-              _navigateToScreen(index);
-            },
-            items: const [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.camera_alt),
-                label: 'Scan',
+      body: HomeContent(isOnline: _isOnline),
+      endDrawer: Drawer(
+        backgroundColor: const Color(0xFFF5F9F5),
+        child: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(color: Colors.green.shade400),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      'assets/images/logo.png',
+                      width: 64,
+                      height: 64,
+                    ),
+                    const SizedBox(width: 12),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Text(
+                          'Agri Clinic Hub',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(height: 4),
+                        Text(
+                          'Smart Farming Assistant',
+                          style: TextStyle(color: Colors.black54, fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.history),
-                label: 'History',
+              ListTile(
+                leading: const Icon(Icons.person),
+                title: const Text('Profile'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed('/profile');
+                },
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
+              ListTile(
+                leading: const Icon(Icons.history),
+                title: const Text('Scan History'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed('/history');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.calendar_month),
+                title: const Text('Crop Calendar'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed('/calendar');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.school),
+                title: const Text('Education'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed('/education');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.mic),
+                title: const Text('Voice Mode'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed('/voice-mode');
+                },
+              ),
+              const Spacer(),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text('Settings'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushNamed('/settings');
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.logout),
+                title: const Text('Logout'),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  // add logout logic here
+                },
               ),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+        child: Container(
+          decoration: BoxDecoration(
+            color: const Color(0xFFF5F9F5),
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.12),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: const Color(0xFFF5F9F5),
+              selectedItemColor: Colors.green.shade600,
+              unselectedItemColor: Colors.grey.shade500,
+              currentIndex: _selectedIndex,
+              onTap: (index) {
+                setState(() => _selectedIndex = index);
+                _navigateToScreen(index);
+              },
+              items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.camera_alt),
+                  label: 'Scan',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.history),
+                  label: 'History',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -168,7 +278,8 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class HomeContent extends StatefulWidget {
-  const HomeContent({Key? key}) : super(key: key);
+  final bool isOnline;
+  const HomeContent({Key? key, this.isOnline = true}) : super(key: key);
 
   @override
   State<HomeContent> createState() => _HomeContentState();
@@ -198,7 +309,7 @@ class _HomeContentState extends State<HomeContent> {
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [Colors.green.shade400, Colors.green.shade700],
+                colors: [Colors.green.shade300, Colors.green.shade500],
               ),
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
@@ -222,16 +333,18 @@ class _HomeContentState extends State<HomeContent> {
                           Text(
                             '${_getGreeting()}, Yvonne!',
                             style: const TextStyle(
-                              color: Colors.white,
+                              color: Colors.black87,
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            'Your farm is healthy and thriving',
-                            style: TextStyle(
-                              color: Colors.white70,
+                            widget.isOnline
+                                ? 'Your farm is healthy and thriving'
+                                : 'Offline mode: displaying cached data',
+                            style: const TextStyle(
+                              color: Colors.black54,
                               fontSize: 13,
                             ),
                           ),
@@ -241,30 +354,30 @@ class _HomeContentState extends State<HomeContent> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withOpacity(0.5),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Column(
                         children: [
                           const Icon(
                             Icons.cloud_outlined,
-                            color: Colors.white,
+                            color: Colors.black87,
                             size: 32,
                           ),
                           const SizedBox(height: 4),
-                          const Text(
-                            '24°C',
-                            style: TextStyle(
-                              color: Colors.white,
+                          Text(
+                            widget.isOnline ? '24°C' : '24°C (cached)',
+                            style: const TextStyle(
+                              color: Colors.black87,
                               fontSize: 14,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           const SizedBox(height: 2),
                           Text(
-                            'Partly Cloudy',
-                            style: TextStyle(
-                              color: Colors.white70,
+                            widget.isOnline ? 'Partly Cloudy' : 'Offline',
+                            style: const TextStyle(
+                              color: Colors.black54,
                               fontSize: 11,
                             ),
                           ),
@@ -280,9 +393,10 @@ class _HomeContentState extends State<HomeContent> {
           // Quick Actions
           Text(
             'Quick Actions',
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
           ),
           const SizedBox(height: 12),
           GridView.count(
@@ -326,9 +440,10 @@ class _HomeContentState extends State<HomeContent> {
           // Recent Activity
           Text(
             'Recent Activity',
-            style: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
           ),
           const SizedBox(height: 12),
           Card(
@@ -389,9 +504,9 @@ class _HomeContentState extends State<HomeContent> {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withOpacity(0.2),
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: color.withOpacity(0.3), width: 1),
+          border: Border.all(color: color, width: 2),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -409,9 +524,10 @@ class _HomeContentState extends State<HomeContent> {
             Text(
               label,
               textAlign: TextAlign.center,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
             ),
           ],
         ),
