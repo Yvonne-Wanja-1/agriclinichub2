@@ -5,7 +5,7 @@ class BottomNavWrapper extends StatefulWidget {
   final Widget child;
   final int initialIndex;
 
-  const BottomNavWrapper({Key? key, required this.child, this.initialIndex = 4})
+  const BottomNavWrapper({Key? key, required this.child, this.initialIndex = 2})
     : super(key: key);
 
   @override
@@ -27,21 +27,22 @@ class _BottomNavWrapperState extends State<BottomNavWrapper> {
     });
 
     // Navigate based on the selected index
+    // Order: Profile (0), Scan (1), Home (2), Calendar (3), History (4)
     switch (index) {
       case 0:
-        Navigator.of(context).pushNamed('/scan');
-        break;
-      case 1:
-        Navigator.of(context).pushNamed('/history');
-        break;
-      case 2:
-        Navigator.of(context).pushNamed('/calendar');
-        break;
-      case 3:
         Navigator.of(context).pushNamed('/profile');
         break;
-      case 4:
+      case 1:
+        Navigator.of(context).pushNamed('/scan');
+        break;
+      case 2:
         Navigator.of(context).pushNamed('/home');
+        break;
+      case 3:
+        Navigator.of(context).pushNamed('/calendar');
+        break;
+      case 4:
+        Navigator.of(context).pushNamed('/history');
         break;
     }
   }
@@ -54,11 +55,11 @@ class _BottomNavWrapperState extends State<BottomNavWrapper> {
         index: _selectedIndex,
         height: 75.0,
         items: [
-          Icon(Icons.camera_alt, size: 30, color: Colors.white),
-          Icon(Icons.history, size: 30, color: Colors.white),
-          Icon(Icons.calendar_month, size: 30, color: Colors.white),
           Icon(Icons.person, size: 30, color: Colors.white),
+          Icon(Icons.camera_alt, size: 30, color: Colors.white),
           Icon(Icons.home, size: 30, color: Colors.white),
+          Icon(Icons.calendar_month, size: 30, color: Colors.white),
+          Icon(Icons.history, size: 30, color: Colors.white),
         ],
         color: Colors.green.shade600,
         backgroundColor: Colors.white,
