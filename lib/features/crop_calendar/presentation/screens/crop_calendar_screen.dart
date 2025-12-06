@@ -69,6 +69,9 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
   }
 
   void _showEditDialog() {
+    final titleController = TextEditingController();
+    final descController = TextEditingController();
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -78,12 +81,24 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
+                controller: titleController,
                 decoration: InputDecoration(
                   hintText: 'Event title',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: descController,
+                decoration: InputDecoration(
+                  hintText: 'Description',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                maxLines: 3,
               ),
               const SizedBox(height: 16),
               TextField(
@@ -96,7 +111,7 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
                 ),
                 readOnly: true,
                 onTap: () async {
-                  final date = await showDatePicker(
+                  showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime.now(),
@@ -129,6 +144,48 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
     );
   }
 
+  void _openMenu() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('Edit Calendar'),
+              onTap: () {
+                Navigator.pop(context);
+                _showEditDialog();
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.download),
+              title: const Text('Download Calendar'),
+              onTap: () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Calendar downloaded!')),
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.share),
+              title: const Text('Share Calendar'),
+              onTap: () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Calendar shared!')),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,14 +199,7 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
           onPressed: () => Navigator.pop(context),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(const SnackBar(content: Text('Menu opened')));
-            },
-          ),
+          IconButton(icon: const Icon(Icons.menu), onPressed: _openMenu),
         ],
       ),
       body: Container(
@@ -194,6 +244,24 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
                   ),
                   const SizedBox(height: 20),
 
+                  // Edit Calendar Button
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _showEditDialog,
+                      icon: const Icon(Icons.edit),
+                      label: const Text('Add Event'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green.shade600,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
                   // Calendar Grid
                   _buildCalendarGrid(),
                   const SizedBox(height: 30),
@@ -217,10 +285,10 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
                         color: Colors.grey.shade100,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'No upcoming events',
-                          style: TextStyle(color: Colors.grey.shade600),
+                          style: TextStyle(color: Colors.black87),
                         ),
                       ),
                     )
@@ -269,9 +337,9 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
                     child: Center(
                       child: Text(
                         day,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey.shade600,
+                          color: Colors.black87,
                           fontSize: 12,
                         ),
                       ),
@@ -377,11 +445,11 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
+          const Text(
             'Event Types',
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              color: Colors.grey.shade800,
+              color: Colors.black87,
             ),
           ),
           const SizedBox(height: 12),
@@ -403,7 +471,7 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
                   const SizedBox(width: 8),
                   Text(
                     type['label'] as String,
-                    style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+                    style: const TextStyle(fontSize: 13, color: Colors.black87),
                   ),
                 ],
               );
@@ -453,7 +521,7 @@ class _CropCalendarScreenState extends State<CropCalendarScreen> {
                 const SizedBox(height: 4),
                 Text(
                   DateFormat('MMM dd, yyyy').format(event['date'] as DateTime),
-                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                  style: const TextStyle(fontSize: 12, color: Colors.black87),
                 ),
               ],
             ),
