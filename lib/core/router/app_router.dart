@@ -46,12 +46,12 @@ class AppRouter {
       case AppRouter.home:
         return MaterialPageRoute(
           builder: (_) =>
-              BottomNavWrapper(initialIndex: 4, child: const HomeScreen()),
+              BottomNavWrapper(initialIndex: 2, child: const HomeScreen()),
         );
       case AppRouter.scan:
         return MaterialPageRoute(
           builder: (_) =>
-              BottomNavWrapper(initialIndex: 0, child: const ScanScreen()),
+              BottomNavWrapper(initialIndex: 1, child: const ScanScreen()),
         );
       case AppRouter.scanResult:
         final args = settings.arguments as Map<String, dynamic>?;
@@ -61,14 +61,14 @@ class AppRouter {
       case AppRouter.history:
         return MaterialPageRoute(
           builder: (_) => BottomNavWrapper(
-            initialIndex: 1,
+            initialIndex: 4,
             child: const ScanHistoryScreen(),
           ),
         );
       case AppRouter.profile:
         return MaterialPageRoute(
           builder: (_) => BottomNavWrapper(
-            initialIndex: 2,
+            initialIndex: 0,
             child: const FarmerProfileScreen(),
           ),
         );
