@@ -35,13 +35,16 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Row(
           children: [
-            IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                _scaffoldKey.currentState?.openEndDrawer();
-              },
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  _scaffoldKey.currentState?.openEndDrawer();
+                },
+              ),
             ),
-            const SizedBox(width: 4),
+            const SizedBox(width: 0),
             Container(
               width: 40,
               height: 40,
@@ -50,7 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.green.shade600, width: 2),
               ),
-              child: Image.asset('assets/images/logo.png'),
+              child: ClipOval(
+                child: Image.asset('assets/images/logo.png', fit: BoxFit.cover),
+              ),
             ),
             const SizedBox(width: 8),
             const Text(
@@ -127,7 +132,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.white,
                         shape: BoxShape.circle,
                       ),
-                      child: Image.asset('assets/images/logo.png'),
+                      child: ClipOval(
+                        child: Image.asset(
+                          'assets/images/logo.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                     const SizedBox(height: 12),
                     const Text(
