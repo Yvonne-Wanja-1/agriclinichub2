@@ -116,7 +116,9 @@ class ArticlesScreen extends StatelessWidget {
                                 vertical: 4,
                               ),
                               decoration: BoxDecoration(
-                                color: (article['color'] as Color).withOpacity(0.15),
+                                color: (article['color'] as Color).withOpacity(
+                                  0.15,
+                                ),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
