@@ -16,6 +16,48 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
   final String _farmLocation = 'Kiambu County, Kenya';
   final int _totalScans = 24;
   final int _plantsMonitored = 7;
+  final int _animalsMonitored = 12;
+  final String _memberSince = 'January 2023';
+
+  void _openMenu() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/settings');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.language),
+              title: const Text('Language'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, '/language');
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.help),
+              title: const Text('Help & Support'),
+              onTap: () {
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Opening support page...')),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +67,13 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
         centerTitle: true,
         backgroundColor: Colors.green.shade600,
         elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          IconButton(icon: const Icon(Icons.menu), onPressed: _openMenu),
+        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -40,8 +89,12 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
               children: [
                 // Profile Header
                 Container(
+                  margin: const EdgeInsets.all(15),
                   padding: const EdgeInsets.symmetric(vertical: 30),
-                  color: Colors.green.shade600,
+                  decoration: BoxDecoration(
+                    color: Colors.green.shade600,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: Column(
                     children: [
                       Container(
@@ -65,20 +118,43 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 15),
-                      Text(
-                        _userName,
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            _userName,
+                            style: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(context, '/edit-profile');
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: const Icon(
+                                Icons.edit,
+                                size: 18,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 8),
                       Text(
-                        'Farmer ID: FRM-2024-001',
+                        'Member since $_memberSince',
                         style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.white.withOpacity(0.8),
+                          fontSize: 11,
+                          color: Colors.white.withOpacity(0.7),
                         ),
                       ),
                     ],
@@ -90,27 +166,64 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Statistics
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _buildStatCard(
-                              icon: Icons.camera_alt,
-                              title: 'Total Scans',
-                              value: _totalScans.toString(),
-                              color: Colors.blue,
+                      // Statistics Section
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.green.shade200),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 10,
                             ),
-                          ),
-                          const SizedBox(width: 15),
-                          Expanded(
-                            child: _buildStatCard(
-                              icon: Icons.local_florist,
-                              title: 'Plants Monitored',
-                              value: _plantsMonitored.toString(),
-                              color: Colors.green,
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Statistics',
+                              style: Theme.of(context).textTheme.titleLarge
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green.shade600,
+                                  ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 20),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _buildStatCard(
+                                    icon: Icons.camera_alt,
+                                    title: 'Total Scans',
+                                    value: _totalScans.toString(),
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                                const SizedBox(width: 15),
+                                Expanded(
+                                  child: _buildStatCard(
+                                    icon: Icons.local_florist,
+                                    title: 'Plants',
+                                    value: _plantsMonitored.toString(),
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                const SizedBox(width: 15),
+                                Expanded(
+                                  child: _buildStatCard(
+                                    icon: Icons.pets,
+                                    title: 'Animals',
+                                    value: _animalsMonitored.toString(),
+                                    color: Colors.orange,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 25),
 
@@ -119,6 +232,7 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                         'Personal Information',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
+                          color: Colors.green.shade600,
                         ),
                       ),
                       const SizedBox(height: 15),
@@ -144,6 +258,7 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                         'Farm Information',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.bold,
+                          color: Colors.green.shade600,
                         ),
                       ),
                       const SizedBox(height: 15),
@@ -170,7 +285,17 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                         value: _farmLocation,
                         iconColor: Colors.red,
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 25),
+
+                      // Quick Actions Section
+                      Text(
+                        'Quick Actions',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green.shade600,
+                        ),
+                      ),
+                      const SizedBox(height: 15),
 
                       // Edit Profile Button
                       SizedBox(
@@ -192,9 +317,9 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 12),
 
-                      // Additional Actions
+                      // Change Photo Button
                       SizedBox(
                         width: double.infinity,
                         height: 50,
@@ -202,12 +327,40 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text('Profile photo updated!'),
+                                content: Text('Opening photo picker...'),
                               ),
                             );
                           },
                           icon: const Icon(Icons.camera_alt),
                           label: const Text('Change Photo'),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: Colors.green.shade600,
+                            side: BorderSide(
+                              color: Colors.green.shade600,
+                              width: 2,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+
+                      // View Reports Button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: OutlinedButton.icon(
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Opening farm reports...'),
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.assessment),
+                          label: const Text('View Farm Reports'),
                           style: OutlinedButton.styleFrom(
                             foregroundColor: Colors.green.shade600,
                             side: BorderSide(
@@ -239,11 +392,11 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
     required Color color,
   }) {
     return Container(
-      padding: const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.green.shade200),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -255,27 +408,31 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: color, size: 28),
+            child: Icon(icon, color: color, size: 24),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Text(
             value,
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: color,
+              color: Colors.green.shade600,
             ),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 4),
           Text(
             title,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+            style: const TextStyle(
+              fontSize: 11,
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
@@ -293,7 +450,7 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
+        border: Border.all(color: Colors.green.shade200),
       ),
       child: Row(
         children: [
@@ -314,8 +471,8 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                   label,
                   style: TextStyle(
                     fontSize: 12,
-                    color: Colors.grey.shade600,
-                    fontWeight: FontWeight.w500,
+                    color: Colors.green.shade600,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 5),
