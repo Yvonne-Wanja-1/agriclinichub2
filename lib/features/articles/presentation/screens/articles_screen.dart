@@ -73,6 +73,7 @@ class ArticlesScreen extends StatelessWidget {
               ),
               child: Container(
                 decoration: BoxDecoration(
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: article['color'] as Color,

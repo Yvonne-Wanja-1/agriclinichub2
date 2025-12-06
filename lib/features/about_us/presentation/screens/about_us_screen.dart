@@ -27,7 +27,7 @@ class AboutUsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     shape: BoxShape.circle,
@@ -51,10 +51,10 @@ class AboutUsScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'v1.0.0',
-                  style: TextStyle(fontSize: 14, color: Colors.black54),
-                ),
+                // const Text(
+                //   'v1.0.0',
+                //   style: TextStyle(fontSize: 14, color: Colors.black54),
+                // ),
               ],
             ),
           ),
@@ -83,7 +83,7 @@ class AboutUsScreen extends StatelessWidget {
             child: Column(
               children: [
                 const Text(
-                  'Follow Us',
+                  'We love hearing from you!🙂',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -94,11 +94,17 @@ class AboutUsScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildSocialIcon(Icons.public, 'Website'),
+                    _buildSocialImageIcon(
+                      'assets/images/whatsapplogo.png',
+                      'WhatsApp',
+                    ),
+                     _buildSocialImageIcon(
+                      'assets/images/instagramlogo.png',
+                      'Instagram',
+                    ),
                     const SizedBox(width: 16),
-                    _buildSocialIcon(Icons.facebook, 'Facebook'),
+                    _buildSocialIcon(Icons.mail, 'Email'),
                     const SizedBox(width: 16),
-                    _buildSocialIcon(Icons.camera_alt, 'Instagram'),
                   ],
                 ),
               ],
@@ -123,10 +129,10 @@ class AboutUsScreen extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: Colors.green.shade600,
             ),
           ),
           const SizedBox(height: 8),
@@ -155,6 +161,34 @@ class AboutUsScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(icon, color: Colors.white, size: 24),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            label,
+            style: const TextStyle(fontSize: 11, color: Colors.black54),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSocialImageIcon(String imagePath, String label) {
+    return GestureDetector(
+      onTap: () {},
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Image.asset(
+              imagePath,
+              width: 24,
+              height: 24,
+              fit: BoxFit.contain,
+            ),
           ),
           const SizedBox(height: 4),
           Text(

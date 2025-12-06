@@ -45,14 +45,10 @@ class ContactUsScreen extends StatelessWidget {
                 _buildContactItem(
                   Icons.location_on,
                   'Address',
-                  'Nairobi, Kenya',
+                  'Kirinyaga, Kenya',
                 ),
                 const SizedBox(height: 16),
-                _buildContactItem(
-                  Icons.schedule,
-                  'Business Hours',
-                  'Mon-Fri: 9:00 AM - 6:00 PM\nSat-Sun: 10:00 AM - 4:00 PM',
-                ),
+                _buildContactItem(Icons.schedule, 'Business Hours', '24/7'),
               ],
             ),
           ),
@@ -66,32 +62,49 @@ class ContactUsScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'Send us a Message',
+                  'Talk to Us on Social Media 🙂',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   ),
                 ),
-                const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: const Icon(Icons.mail),
-                  label: const Text('Send Email'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.green.shade600,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildSocialButton(Icons.mail, 'Email', Colors.green, () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Opening email...')),
+                      );
+                    }),
+                    _buildSocialImageButton(
+                      'assets/images/whatsapplogo.png',
+                      'WhatsApp',
+                      () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Opening WhatsApp...')),
+                        );
+                      },
                     ),
-                  ),
+                    _buildSocialImageButton(
+                      'assets/images/instagramlogo.png',
+                      'Instagram',
+                      () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Opening Instagram...')),
+                        );
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
+          const SizedBox(height: 20),
         ],
       ),
     );
@@ -135,6 +148,74 @@ class ContactUsScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSocialButton(
+    IconData icon,
+    String label,
+    Color color,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(icon, color: color, size: 28),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSocialImageButton(
+    String imagePath,
+    String label,
+    VoidCallback onTap,
+  ) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: Image.asset(
+              imagePath,
+              width: 40,
+              height: 40,
+              fit: BoxFit.contain,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

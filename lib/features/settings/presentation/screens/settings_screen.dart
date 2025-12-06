@@ -20,6 +20,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         backgroundColor: Colors.green.shade600,
         elevation: 0,
       ),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -30,8 +31,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               // App Preferences Section
               _buildSectionTitle('Preferences'),
               const SizedBox(height: 12),
-              Card(
-                elevation: 1,
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.green.shade400,
+                      blurRadius: 5,
+                      offset: const Offset(0, 4),
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
                 child: Column(
                   children: [
                     ListTile(
@@ -83,8 +95,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               // Data Section
               _buildSectionTitle('Data'),
               const SizedBox(height: 12),
-              Card(
-                elevation: 1,
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.green.shade400,
+                      blurRadius: 5,
+                      offset: const Offset(0, 4),
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
                 child: Column(
                   children: [
                     ListTile(
@@ -119,8 +142,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
               // About Section
               _buildSectionTitle('About'),
               const SizedBox(height: 12),
-              Card(
-                elevation: 1,
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.green.shade400,
+                      blurRadius: 5,
+                      offset: const Offset(0, 4),
+                      spreadRadius: 2,
+                    ),
+                  ],
+                ),
                 child: Column(
                   children: [
                     ListTile(

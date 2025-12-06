@@ -67,10 +67,6 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
         centerTitle: true,
         backgroundColor: Colors.green.shade600,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
         actions: [
           IconButton(icon: const Icon(Icons.menu), onPressed: _openMenu),
         ],

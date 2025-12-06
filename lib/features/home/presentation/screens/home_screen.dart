@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -33,21 +34,24 @@ class _HomeScreenState extends State<HomeScreen> {
       key: _scaffoldKey,
       backgroundColor: const Color(0xFFF5F9F5),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 8.0),
+              padding: const EdgeInsets.only(left: 0.0),
               child: IconButton(
                 icon: const Icon(Icons.menu),
                 onPressed: () {
                   _scaffoldKey.currentState?.openEndDrawer();
                 },
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
               ),
             ),
-            const SizedBox(width: 0),
+            const SizedBox(width: 2),
             Container(
-              width: 40,
-              height: 40,
+              width: 39,
+              height: 39,
               decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
@@ -57,15 +61,25 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Image.asset('assets/images/logo.png', fit: BoxFit.cover),
               ),
             ),
-            const SizedBox(width: 8),
-            const Text(
-              'Agri Clinic Hub',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                'Agri Clinic Hub',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
         ),
         elevation: 0,
         backgroundColor: Colors.green.shade400,
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.green.shade400,
+          statusBarBrightness: Brightness.light,
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -78,9 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     vertical: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: _isOnline
-                        ? Colors.green.shade300
-                        : Colors.grey.shade400,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -115,114 +127,142 @@ class _HomeScreenState extends State<HomeScreen> {
       body: HomeContent(isOnline: _isOnline),
       endDrawer: Drawer(
         backgroundColor: const Color(0xFFF5F9F5),
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              DrawerHeader(
-                decoration: BoxDecoration(color: Colors.green.shade400),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 64,
-                      height: 64,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: ClipOval(
-                        child: Image.asset(
-                          'assets/images/logo.png',
-                          fit: BoxFit.cover,
+        child: Column(
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: const Color(0xFFF5F9F5),
+                borderRadius: BorderRadius.circular(32),
+              ),
+              margin: EdgeInsets.zero,
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.green.shade400,
+                          blurRadius: 8,
+                          spreadRadius: 3,
                         ),
+                      ],
+                    ),
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    const Text(
-                      'Agri Clinic Hub',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              _buildDrawerMenuItem(
-                context,
-                Icons.person,
-                'Profile',
-                '/profile',
-              ),
-              _buildDrawerMenuItem(
-                context,
-                Icons.history,
-                'Scan History',
-                '/history',
-              ),
-              _buildDrawerMenuItem(
-                context,
-                Icons.calendar_month,
-                'Crop Calendar',
-                '/calendar',
-              ),
-              _buildDrawerMenuItem(
-                context,
-                Icons.article,
-                'Articles',
-                '/articles',
-              ),
-              _buildDrawerMenuItem(
-                context,
-                Icons.mic,
-                'Voice Mode',
-                '/voice-mode',
-              ),
-              _buildDrawerMenuItem(
-                context,
-                Icons.language,
-                'Language',
-                '/language',
-              ),
-              _buildDrawerMenuItem(
-                context,
-                Icons.phone,
-                'Contact Us',
-                '/contact-us',
-              ),
-              _buildDrawerMenuItem(
-                context,
-                Icons.info,
-                'About Us',
-                '/about-us',
-              ),
-              const Spacer(),
-              const Divider(),
-              _buildDrawerMenuItem(
-                context,
-                Icons.settings,
-                'Settings',
-                '/settings',
-              ),
-              ListTile(
-                leading: const Icon(Icons.logout, color: Colors.black87),
-                title: const Text(
-                  'Logout',
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.bold,
                   ),
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  // add logout logic here
-                },
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Agri Clinic Hub',
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _buildDrawerMenuItem(
+                    context,
+                    Icons.person,
+                    'Profile',
+                    '/profile',
+                    dense: true,
+                  ),
+                  _buildDrawerMenuItem(
+                    context,
+                    Icons.history,
+                    'Scan History',
+                    '/history',
+                    dense: true,
+                  ),
+                  _buildDrawerMenuItem(
+                    context,
+                    Icons.calendar_month,
+                    'Crop Calendar',
+                    '/calendar',
+                    dense: true,
+                  ),
+                  _buildDrawerMenuItem(
+                    context,
+                    Icons.article,
+                    'Articles',
+                    '/articles',
+                    dense: true,
+                  ),
+                  _buildDrawerMenuItem(
+                    context,
+                    Icons.mic,
+                    'Voice Mode',
+                    '/voice-mode',
+                    dense: true,
+                  ),
+                  _buildDrawerMenuItem(
+                    context,
+                    Icons.language,
+                    'Language',
+                    '/language',
+                    dense: true,
+                  ),
+                  _buildDrawerMenuItem(
+                    context,
+                    Icons.phone,
+                    'Contact Us',
+                    '/contact-us',
+                    dense: true,
+                  ),
+                  _buildDrawerMenuItem(
+                    context,
+                    Icons.info,
+                    'About Us',
+                    '/about-us',
+                    dense: true,
+                  ),
+                ],
+              ),
+            ),
+            _buildDrawerMenuItem(
+              context,
+              Icons.settings,
+              'Settings',
+              '/settings',
+              dense: true,
+            ),
+            ListTile(
+              dense: true,
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 0,
+              ),
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: const Text(
+                'Logout',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              onTap: () {
+                Navigator.of(context).pop();
+                // add logout logic here
+              },
+            ),
+          ],
         ),
       ),
     );
@@ -232,14 +272,19 @@ class _HomeScreenState extends State<HomeScreen> {
     BuildContext context,
     IconData icon,
     String title,
-    String route,
-  ) {
+    String route, {
+    bool dense = false,
+  }) {
     return ListTile(
-      leading: Icon(icon, color: Colors.black87),
+      dense: dense,
+      contentPadding: dense
+          ? const EdgeInsets.symmetric(horizontal: 16, vertical: 0)
+          : null,
+      leading: Icon(icon, color: Colors.green.shade600),
       title: Text(
         title,
-        style: const TextStyle(
-          color: Colors.black87,
+        style: TextStyle(
+          color: Colors.green.shade600,
           fontWeight: FontWeight.bold,
         ),
       ),
@@ -420,8 +465,19 @@ class _HomeContentState extends State<HomeContent> {
             ),
           ),
           const SizedBox(height: 12),
-          Card(
-            elevation: 2,
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green.shade400,
+                  blurRadius: 5,
+                  offset: const Offset(0, 4),
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
             child: ListTile(
               leading: Container(
                 width: 50,
@@ -432,8 +488,17 @@ class _HomeContentState extends State<HomeContent> {
                 ),
                 child: Icon(Icons.eco, color: Colors.green.shade700),
               ),
-              title: const Text('Tomato Leaf Scan'),
-              subtitle: const Text('2 hours ago'),
+              title: const Text(
+                'Tomato Leaf Scan',
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: const Text(
+                '2 hours ago',
+                style: TextStyle(color: Colors.black54),
+              ),
               trailing: const Chip(
                 label: Text('Healthy', style: TextStyle(color: Colors.white)),
                 backgroundColor: Colors.green,
@@ -441,20 +506,40 @@ class _HomeContentState extends State<HomeContent> {
             ),
           ),
           const SizedBox(height: 12),
-          Card(
-            elevation: 2,
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(4),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.green.shade400,
+                  blurRadius: 5,
+                  offset: const Offset(0, 4),
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
             child: ListTile(
               leading: Container(
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Colors.yellow.shade100,
+                  color: Colors.orange.shade100,
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Icon(Icons.warning, color: Colors.yellow.shade700),
+                child: Icon(Icons.warning, color: Colors.orange.shade700),
               ),
-              title: const Text('Maize Leaf Scan'),
-              subtitle: const Text('Yesterday'),
+              title: const Text(
+                'Maize Leaf Scan',
+                style: TextStyle(
+                  color: Colors.black87,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              subtitle: const Text(
+                'Yesterday',
+                style: TextStyle(color: Colors.black54),
+              ),
               trailing: const Chip(
                 label: Text('Warning', style: TextStyle(color: Colors.white)),
                 backgroundColor: Colors.orange,

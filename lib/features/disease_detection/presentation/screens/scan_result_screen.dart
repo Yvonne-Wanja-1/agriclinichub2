@@ -34,10 +34,6 @@ class _ScanResultScreenState extends State<ScanResultScreen> {
         centerTitle: true,
         backgroundColor: Colors.green.shade600,
         elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
       ),
       body: Container(
         decoration: BoxDecoration(
