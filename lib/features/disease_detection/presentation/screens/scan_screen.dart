@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../core/widgets/convex_bottom_nav.dart';
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({Key? key}) : super(key: key);
@@ -11,6 +12,7 @@ class ScanScreen extends StatefulWidget {
 class _ScanScreenState extends State<ScanScreen> {
   final ImagePicker _imagePicker = ImagePicker();
   bool _isLoading = false;
+  int _selectedIndex = 1;
 
   Future<void> _captureImage() async {
     try {
@@ -248,7 +250,34 @@ class _ScanScreenState extends State<ScanScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: ConvexBottomNav(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() => _selectedIndex = index);
+          _navigateToScreen(index);
+        },
+      ),
     );
+  }
+
+  void _navigateToScreen(int index) {
+    switch (index) {
+      case 0:
+        Navigator.of(context).pushNamed('/home').then((_) {
+          setState(() => _selectedIndex = 1);
+        });
+        break;
+      case 2:
+        Navigator.of(context).pushNamed('/history').then((_) {
+          setState(() => _selectedIndex = 1);
+        });
+        break;
+      case 3:
+        Navigator.of(context).pushNamed('/profile').then((_) {
+          setState(() => _selectedIndex = 1);
+        });
+        break;
+    }
   }
 
   Widget _buildTip(String tip) {
