@@ -15,6 +15,7 @@ import '../../features/settings/presentation/screens/settings_screen.dart';
 import '../../features/language/presentation/screens/language_screen.dart';
 import '../../features/contact_us/presentation/screens/contact_us_screen.dart';
 import '../../features/about_us/presentation/screens/about_us_screen.dart';
+import '../widgets/bottom_nav_wrapper.dart';
 
 class AppRouter {
   static const String splash = '/';
@@ -43,22 +44,43 @@ class AppRouter {
       case AppRouter.signup:
         return MaterialPageRoute(builder: (_) => const SignupScreen());
       case AppRouter.home:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return MaterialPageRoute(
+          builder: (_) =>
+              BottomNavWrapper(initialIndex: 4, child: const HomeScreen()),
+        );
       case AppRouter.scan:
-        return MaterialPageRoute(builder: (_) => const ScanScreen());
+        return MaterialPageRoute(
+          builder: (_) =>
+              BottomNavWrapper(initialIndex: 0, child: const ScanScreen()),
+        );
       case AppRouter.scanResult:
         final args = settings.arguments as Map<String, dynamic>?;
         return MaterialPageRoute(
           builder: (_) => ScanResultScreen(imagePath: args?['imagePath'] ?? ''),
         );
       case AppRouter.history:
-        return MaterialPageRoute(builder: (_) => const ScanHistoryScreen());
+        return MaterialPageRoute(
+          builder: (_) => BottomNavWrapper(
+            initialIndex: 1,
+            child: const ScanHistoryScreen(),
+          ),
+        );
       case AppRouter.profile:
-        return MaterialPageRoute(builder: (_) => const FarmerProfileScreen());
+        return MaterialPageRoute(
+          builder: (_) => BottomNavWrapper(
+            initialIndex: 2,
+            child: const FarmerProfileScreen(),
+          ),
+        );
       case AppRouter.editProfile:
         return MaterialPageRoute(builder: (_) => const EditProfileScreen());
       case AppRouter.cropCalendar:
-        return MaterialPageRoute(builder: (_) => const CropCalendarScreen());
+        return MaterialPageRoute(
+          builder: (_) => BottomNavWrapper(
+            initialIndex: 3,
+            child: const CropCalendarScreen(),
+          ),
+        );
       case AppRouter.articles:
         return MaterialPageRoute(builder: (_) => const ArticlesScreen());
       case AppRouter.voiceMode:
