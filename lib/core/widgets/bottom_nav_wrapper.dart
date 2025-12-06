@@ -5,11 +5,8 @@ class BottomNavWrapper extends StatefulWidget {
   final Widget child;
   final int initialIndex;
 
-  const BottomNavWrapper({
-    Key? key,
-    required this.child,
-    this.initialIndex = 4, // Home is default
-  }) : super(key: key);
+  const BottomNavWrapper({Key? key, required this.child, this.initialIndex = 4})
+    : super(key: key);
 
   @override
   State<BottomNavWrapper> createState() => _BottomNavWrapperState();
@@ -17,19 +14,11 @@ class BottomNavWrapper extends StatefulWidget {
 
 class _BottomNavWrapperState extends State<BottomNavWrapper> {
   late int _currentIndex;
-  late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
     _currentIndex = widget.initialIndex;
-    _pageController = PageController(initialPage: _currentIndex);
-  }
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
   }
 
   void _onNavTap(int index) {
