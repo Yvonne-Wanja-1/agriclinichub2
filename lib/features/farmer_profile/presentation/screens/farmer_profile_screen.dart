@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../../core/widgets/convex_bottom_nav.dart';
 
 class FarmerProfileScreen extends StatefulWidget {
   const FarmerProfileScreen({Key? key}) : super(key: key);
@@ -8,6 +9,7 @@ class FarmerProfileScreen extends StatefulWidget {
 }
 
 class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
+  int _selectedIndex = 2; // Profile is at index 2
   final String _userName = 'John Mwangi';
   final String _userEmail = 'john.mwangi@agri.com';
   final String _userPhone = '+254 712 345 678';

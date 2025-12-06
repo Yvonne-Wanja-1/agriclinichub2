@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import '../../../../core/widgets/convex_bottom_nav.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -9,7 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 4; // Home is in the middle (index 4)
   bool _isOnline = true;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -215,50 +216,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-        child: Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFFF5F9F5),
-            borderRadius: BorderRadius.circular(24),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.12),
-                blurRadius: 12,
-                offset: const Offset(0, 6),
-              ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(24),
-            child: BottomNavigationBar(
-              type: BottomNavigationBarType.fixed,
-              backgroundColor: const Color(0xFFF5F9F5),
-              selectedItemColor: Colors.green.shade600,
-              unselectedItemColor: Colors.grey.shade500,
-              currentIndex: _selectedIndex,
-              onTap: (index) {
-                setState(() => _selectedIndex = index);
-                _navigateToScreen(index);
-              },
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.camera_alt),
-                  label: 'Scan',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.history),
-                  label: 'History',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.person),
-                  label: 'Profile',
-                ),
-              ],
-            ),
-          ),
-        ),
+      bottomNavigationBar: ConvexBottomNav(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          setState(() => _selectedIndex = index);
+          _navigateToScreen(index);
+        },
       ),
     );
   }
@@ -287,19 +250,24 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _navigateToScreen(int index) {
     switch (index) {
-      case 1:
+      case 0: // Scan
         Navigator.of(context).pushNamed('/scan').then((_) {
-          setState(() => _selectedIndex = 0);
+          setState(() => _selectedIndex = 4);
         });
         break;
-      case 2:
+      case 1: // History
         Navigator.of(context).pushNamed('/history').then((_) {
-          setState(() => _selectedIndex = 0);
+          setState(() => _selectedIndex = 4);
         });
         break;
-      case 3:
+      case 2: // Profile
         Navigator.of(context).pushNamed('/profile').then((_) {
-          setState(() => _selectedIndex = 0);
+          setState(() => _selectedIndex = 4);
+        });
+        break;
+      case 3: // More (Crop Calendar)
+        Navigator.of(context).pushNamed('/calendar').then((_) {
+          setState(() => _selectedIndex = 4);
         });
         break;
     }
