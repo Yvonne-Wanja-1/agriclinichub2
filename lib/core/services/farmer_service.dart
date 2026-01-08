@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:agriclinichub/core/services/notification_logic.dart';
 
 class FarmerService {
   // Replace localhost with your machine's IP if testing on mobile device
-static const String baseUrl = 'http://192.168.0.117:3000/api/farmers';
-
+  static const String baseUrl = 'http://192.168.0.117:3000/api/farmers';
 
   // Get all farmers
   static Future<List<dynamic>> getFarmers() async {
@@ -28,6 +28,11 @@ static const String baseUrl = 'http://192.168.0.117:3000/api/farmers';
       body: jsonEncode({'name': name, 'phone': phone, 'county': county}),
     );
     if (response.statusCode == 200) {
+      // Trigger notification on successful submission
+      await NotificationLogic.onFarmerDataSubmitted(
+        farmerName: name,
+        county: county,
+      );
       return true;
     } else {
       throw Exception('Failed to add farmer');

@@ -4,6 +4,7 @@ import 'firebase_options.dart';
 import 'core/router/app_router.dart';
 import 'core/services/notification_service.dart';
 import 'core/services/local_storage_service.dart';
+import 'core/services/connectivity_listener.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -11,6 +12,7 @@ void main() async {
   await NotificationService.initialize();
   await NotificationService.requestPermissions();
   await LocalStorageService.initialize();
+  await ConnectivityListener.initialize();
   runApp(const AgriClinicHubApp());
 }
 

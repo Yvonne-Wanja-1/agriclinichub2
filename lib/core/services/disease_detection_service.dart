@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:agriclinichub/core/services/notification_logic.dart';
 
 class DiseaseDetectionService {
   // Initialize TFLite model
@@ -17,8 +18,9 @@ class DiseaseDetectionService {
 
   // Detect diseases in image
   static Future<Map<String, dynamic>> detectDiseases(
-    Uint8List imageBytes,
-  ) async {
+    Uint8List imageBytes, {
+    String cropName = 'Unknown Crop', // Added crop name parameter
+  }) async {
     try {
       // Run inference on the image
       // final results = await Tflite.runModelOnImage(
@@ -30,7 +32,7 @@ class DiseaseDetectionService {
       // );
 
       // Parse results and format response
-      return {
+      final detectionResult = {
         'hasDisease': true,
         'diseases': [
           {
@@ -54,6 +56,22 @@ class DiseaseDetectionService {
         ],
         'nextReview': '7 days',
       };
+
+      // Trigger notification if disease detected
+      if (detectionResult['hasDisease'] == true) {
+        final diseases = detectionResult['diseases'] as List?;
+        if (diseases != null && diseases.isNotEmpty) {
+          final mainDisease = diseases[0] as Map<String, dynamic>;
+          await NotificationLogic.onDiseaseDetected(
+            cropName: cropName,
+            mainDisease: mainDisease['name'] ?? 'Unknown Disease',
+            confidence: mainDisease['confidence'] ?? 0.0,
+            severity: mainDisease['severity'] ?? 'unknown',
+          );
+        }
+      }
+
+      return detectionResult;
     } catch (e) {
       rethrow;
     }
@@ -109,11 +127,12 @@ class DiseaseDetectionService {
 
   // Analyze multiple diseases in one scan
   static Future<List<Map<String, dynamic>>> analyzeCompleteImage(
-    Uint8List imageBytes,
-  ) async {
+    Uint8List imageBytes, {
+    String cropName = 'Unknown Crop',
+  }) async {
     try {
       // Run object detection to identify all visible diseases
-      final results = await detectDiseases(imageBytes);
+      final results = await detectDiseases(imageBytes, cropName: cropName);
       final diseases = (results['diseases'] as List)
           .cast<Map<String, dynamic>>();
 
