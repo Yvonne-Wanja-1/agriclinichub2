@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:agriclinichub/core/services/farmer_service.dart';
 
 class FarmerProfileScreen extends StatefulWidget {
   const FarmerProfileScreen({Key? key}) : super(key: key);
@@ -57,6 +58,30 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _submitFarmerData() async {
+    try {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Submitting farmer data...')),
+      );
+
+      final success = await FarmerService.addFarmer(
+        _userName,
+        _userPhone,
+        _farmLocation.split(',').last.trim(),
+      );
+
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Farmer data submitted successfully!')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error: ${e.toString()}')));
+    }
   }
 
   @override
@@ -366,6 +391,26 @@ class _FarmerProfileScreenState extends State<FarmerProfileScreen> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Submit Farmer Data Button
+                      SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton.icon(
+                          onPressed: _submitFarmerData,
+                          icon: const Icon(Icons.cloud_upload),
+                          label: const Text('Submit Farmer Data'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue.shade600,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            elevation: 5,
                           ),
                         ),
                       ),
