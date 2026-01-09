@@ -1,4 +1,4 @@
-package com.example.agriclinichub_fresh
+package com.example.agriclinichub
 
 import io.flutter.embedding.android.FlutterActivity
 
