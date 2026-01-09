@@ -50,7 +50,6 @@ class FirebaseMessagingService {
       alert: true,
       announcement: true,
       badge: true,
-      carefullyProvisionalAlert: true,
       criticalAlert: true,
       provisional: true,
       sound: true,
@@ -96,7 +95,6 @@ class FirebaseMessagingService {
   /// Handle foreground messages by showing local notification
   static Future<void> _handleForegroundMessage(RemoteMessage message) async {
     final notification = message.notification;
-    final android = message.notification?.android;
     final data = message.data;
 
     if (notification != null) {

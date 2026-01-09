@@ -31,15 +31,6 @@ class NotificationService {
           defaultPresentSound: true,
           defaultPresentBadge: true,
           defaultPresentAlert: true,
-          notificationCategories: [
-            DarwinNotificationCategory(
-              'messageCategory',
-              actions: <DarwinNotificationAction>[
-                DarwinNotificationAction.plain('id_1', 'Action 1'),
-                DarwinNotificationAction.plain('id_2', 'Action 2'),
-              ],
-            ),
-          ],
         );
 
     const InitializationSettings initSettings = InitializationSettings(
@@ -253,3 +244,4 @@ class NotificationService {
     }
     await FirebaseMessagingService.setNotificationsEnabled(enabled);
   }
+}
