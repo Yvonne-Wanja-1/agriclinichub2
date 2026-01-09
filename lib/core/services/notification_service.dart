@@ -1,10 +1,12 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/foundation.dart';
+import 'firebase_messaging_service.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
   static late FlutterLocalNotificationsPlugin _flutterLocalNotificationsPlugin;
   static bool _isInitialized = false;
+  static bool _firebaseInitialized = false;
 
   factory NotificationService() {
     return _instance;
@@ -12,7 +14,7 @@ class NotificationService {
 
   NotificationService._internal();
 
-  /// Initialize the notification service
+  /// Initialize the notification service with Firebase support
   static Future<void> initialize() async {
     if (_isInitialized) return;
 
@@ -26,6 +28,18 @@ class NotificationService {
           requestAlertPermission: true,
           requestBadgePermission: true,
           requestSoundPermission: true,
+          defaultPresentSound: true,
+          defaultPresentBadge: true,
+          defaultPresentAlert: true,
+          notificationCategories: [
+            DarwinNotificationCategory(
+              'messageCategory',
+              actions: <DarwinNotificationAction>[
+                DarwinNotificationAction.plain('id_1', 'Action 1'),
+                DarwinNotificationAction.plain('id_2', 'Action 2'),
+              ],
+            ),
+          ],
         );
 
     const InitializationSettings initSettings = InitializationSettings(
@@ -36,7 +50,12 @@ class NotificationService {
     await _flutterLocalNotificationsPlugin.initialize(
       initSettings,
       onDidReceiveNotificationResponse: _onSelectNotification,
+      onDidReceiveBackgroundNotificationResponse: _onSelectNotification,
     );
+
+    // Initialize Firebase Messaging for push notifications
+    await FirebaseMessagingService.initialize();
+    _firebaseInitialized = true;
 
     _isInitialized = true;
   }
@@ -202,8 +221,35 @@ class NotificationService {
 
     await showNotification(title: title, body: body, id: 1001);
   }
-}
 
-// Note: For timezone support with scheduled notifications, add timezone package:
-// timezone package: ^0.9.0
-// Then initialize with: tz.initializeTimeZones();
+  /// Get FCM token for sending push notifications
+  static Future<String?> getFCMToken() async {
+    if (!_firebaseInitialized) {
+      await initialize();
+    }
+    return await FirebaseMessagingService.getFCMToken();
+  }
+
+  /// Subscribe to notification topic
+  static Future<void> subscribeToTopic(String topic) async {
+    if (!_firebaseInitialized) {
+      await initialize();
+    }
+    await FirebaseMessagingService.subscribeToTopic(topic);
+  }
+
+  /// Unsubscribe from notification topic
+  static Future<void> unsubscribeFromTopic(String topic) async {
+    if (!_firebaseInitialized) {
+      await initialize();
+    }
+    await FirebaseMessagingService.unsubscribeFromTopic(topic);
+  }
+
+  /// Enable or disable notifications
+  static Future<void> setNotificationsEnabled(bool enabled) async {
+    if (!_firebaseInitialized) {
+      await initialize();
+    }
+    await FirebaseMessagingService.setNotificationsEnabled(enabled);
+  }
